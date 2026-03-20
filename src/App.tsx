@@ -22,7 +22,6 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 
-import wordmark from '../w13logo.png'
 import { SectionReveal } from '@/components/section-reveal'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -399,15 +398,15 @@ function App() {
         <header
           className={cn(
             'fixed inset-x-0 top-0 z-50 transition-all duration-300',
-            isHeaderScrolled ? 'py-2.5' : 'py-4',
+            isHeaderScrolled ? 'py-2' : 'py-3',
           )}
         >
           <div
             className={cn(
               `${containerClass} nav-shell liquid-glass`,
               isHeaderScrolled
-                ? 'border-white/26 bg-black/54'
-                : 'border-white/20 bg-black/34',
+                ? 'border-transparent bg-black/56'
+                : 'border-transparent bg-black/36',
             )}
           >
             <a
@@ -415,9 +414,9 @@ function App() {
               className="shrink-0 transition-transform duration-300 hover:scale-[1.02]"
             >
               <img
-                src={wordmark}
+                src="/logo_navbar.svg"
                 alt="W13 Tecnologia"
-                className="h-7 w-auto sm:h-8"
+                className="h-8 w-auto sm:h-9"
               />
             </a>
 
@@ -443,7 +442,7 @@ function App() {
             <div className="hidden items-center gap-3 lg:flex">
               <a
                 href="mailto:contato@w13.com.br"
-                className="text-[0.72rem] uppercase tracking-[0.22em] text-white/64 transition-colors hover:text-white"
+                className="text-[0.66rem] uppercase tracking-[0.2em] text-white/64 transition-colors hover:text-white"
               >
                 contato@w13.com.br
               </a>
@@ -451,7 +450,7 @@ function App() {
                 asChild
                 variant="glass"
                 size="default"
-                className="border border-white/20 px-5 text-[0.68rem] uppercase tracking-[0.22em] text-white"
+                className="border border-white/20 px-4 py-2 text-[0.62rem] uppercase tracking-[0.2em] text-white"
               >
                 <a href="#contato">
                   Falar com a W13
@@ -464,7 +463,7 @@ function App() {
               type="button"
               aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
               aria-expanded={isMobileMenuOpen}
-              className="inline-flex size-10 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white transition-colors hover:bg-white/10 lg:hidden"
+              className="inline-flex size-9 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white transition-colors hover:bg-white/10 lg:hidden"
               onClick={() => setIsMobileMenuOpen((current) => !current)}
             >
               {isMobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -480,7 +479,7 @@ function App() {
                 transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
                 className={`${containerClass} mt-3 lg:hidden`}
               >
-                <div className="liquid-glass rounded-[1.6rem] border border-white/20 p-3.5">
+                <div className="liquid-glass rounded-[1.35rem] border border-white/32 p-3">
                   {navItems.map((item) => (
                     <a
                       key={item.id}
@@ -495,7 +494,7 @@ function App() {
                     asChild
                     variant="glass"
                     size="lg"
-                    className="mt-2 justify-center border border-white/20 text-[0.72rem] uppercase tracking-[0.22em] text-white"
+                    className="mt-2 justify-center border border-white/20 text-[0.68rem] uppercase tracking-[0.2em] text-white"
                   >
                     <a href="#contato" onClick={() => setIsMobileMenuOpen(false)}>
                       Falar com a W13
@@ -543,11 +542,11 @@ function App() {
 
             <div className="hero-grid absolute inset-0 z-0" aria-hidden="true" />
             <div
-              className="absolute bottom-0 left-0 right-0 z-0 h-[54%] bg-[linear-gradient(180deg,rgba(6,9,19,0)_0%,rgba(6,9,19,0.16)_22%,rgba(6,9,19,0.54)_52%,rgba(6,9,19,0.96)_100%)]"
+              className="absolute bottom-0 left-0 right-0 z-0 h-[72%] bg-[linear-gradient(180deg,rgba(6,9,19,0)_0%,rgba(6,9,19,0.14)_14%,rgba(6,9,19,0.48)_34%,rgba(6,9,19,0.82)_58%,rgba(6,9,19,0.98)_82%,rgba(6,9,19,1)_100%)]"
               aria-hidden="true"
             />
             <div
-              className="absolute bottom-[-2rem] left-0 right-0 z-0 h-28 bg-background/95 blur-3xl"
+              className="absolute bottom-[-4rem] left-0 right-0 z-0 h-44 bg-background blur-3xl"
               aria-hidden="true"
             />
 
@@ -617,8 +616,16 @@ function App() {
 
           <section
             id="quem-somos"
-            className="relative z-10 -mt-10 pb-24 pt-10 sm:-mt-14 sm:pb-28 sm:pt-14 lg:-mt-16"
+            className="relative z-10 -mt-[4.5rem] pb-24 pt-[4.5rem] sm:-mt-24 sm:pb-28 sm:pt-24 lg:-mt-28 lg:pt-28"
           >
+            <div
+              className="absolute inset-x-0 top-[-8rem] h-40 bg-[linear-gradient(180deg,rgba(6,9,19,0)_0%,rgba(6,9,19,0.42)_24%,rgba(6,9,19,0.88)_58%,rgba(6,9,19,1)_100%)] blur-2xl sm:top-[-9rem] sm:h-44 lg:top-[-10rem] lg:h-52"
+              aria-hidden="true"
+            />
+            <div
+              className="absolute inset-x-0 top-0 h-28 bg-[linear-gradient(180deg,hsl(var(--background))_0%,rgba(6,9,19,0.82)_54%,rgba(6,9,19,0)_100%)] sm:h-32 lg:h-36"
+              aria-hidden="true"
+            />
             <div className={containerClass}>
               <SectionReveal className="grid gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-end">
                 <div className="space-y-5">
@@ -1090,9 +1097,9 @@ function App() {
               <div className="mt-10 flex flex-col gap-6 border-t border-white/10 pt-6 lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex items-center gap-4">
                   <img
-                    src={wordmark}
+                    src="/logo_navbar.svg"
                     alt="W13 Tecnologia"
-                    className="h-8 w-auto opacity-90"
+                    className="h-9 w-auto opacity-90"
                   />
                   <p className="text-sm text-white/48">
                     Outsourcing, telecom e TI para operacoes que exigem resultado
