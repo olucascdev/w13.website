@@ -485,7 +485,6 @@ function App() {
               />
             ) : null}
 
-            <div className="hero-grid absolute inset-0 z-0" aria-hidden="true" />
             <div
               className="absolute bottom-0 right-0 z-0 h-28 w-36 bg-[radial-gradient(circle_at_bottom_right,rgba(6,9,19,0.98)_0%,rgba(6,9,19,0.9)_34%,rgba(6,9,19,0.55)_58%,rgba(6,9,19,0)_82%)] blur-xl sm:h-36 sm:w-48 lg:h-44 lg:w-64"
               aria-hidden="true"
