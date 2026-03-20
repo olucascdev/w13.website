@@ -1,0 +1,29 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" rx="48" fill="#07101F"/>
+  <rect width="1600" height="1000" rx="48" fill="url(#paint0_linear)"/>
+  <circle cx="1190" cy="180" r="230" fill="url(#paint1_radial)"/>
+  <path d="M0 860C270 760 472 718 726 718C1016 718 1260 790 1600 924V1000H0V860Z" fill="#091526"/>
+  <ellipse cx="562" cy="640" rx="214" ry="136" fill="#0E2342" stroke="#8FB1FF" stroke-opacity="0.4" stroke-width="6"/>
+  <path d="M468 640C546 584 602 556 700 520" stroke="#D8E5FF" stroke-width="16" stroke-linecap="round"/>
+  <path d="M532 724L700 520" stroke="#D8E5FF" stroke-width="16" stroke-linecap="round"/>
+  <path d="M530 726H762" stroke="#5F84FF" stroke-width="18" stroke-linecap="round"/>
+  <path d="M762 726V836" stroke="#5F84FF" stroke-width="18" stroke-linecap="round"/>
+  <path d="M700 520C818 456 918 426 1076 398" stroke="#8FB1FF" stroke-opacity="0.7" stroke-width="10" stroke-linecap="round"/>
+  <path d="M700 520C824 362 970 268 1188 192" stroke="#8FB1FF" stroke-opacity="0.45" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="1188" cy="192" r="24" fill="#DDE8FF"/>
+  <g opacity="0.22">
+    <path d="M0 250H1600" stroke="#8FB1FF" stroke-width="2"/>
+    <path d="M0 500H1600" stroke="#8FB1FF" stroke-width="2"/>
+    <path d="M0 750H1600" stroke="#8FB1FF" stroke-width="2"/>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear" x1="800" y1="0" x2="800" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0C162D"/>
+      <stop offset="1" stop-color="#08111F"/>
+    </linearGradient>
+    <radialGradient id="paint1_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1190 180) rotate(90) scale(230)">
+      <stop stop-color="#5E84FF"/>
+      <stop offset="1" stop-color="#5E84FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>

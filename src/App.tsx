@@ -10,9 +10,10 @@ import {
   ArrowRight,
   BarChart3,
   Cloud,
+  Globe,
   Headset,
+  Instagram,
   Mail,
-  MapPin,
   Menu,
   Phone,
   Server,
@@ -23,6 +24,7 @@ import {
 } from 'lucide-react'
 
 import { SectionReveal } from '@/components/section-reveal'
+import { CountUp } from '@/components/count-up'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -32,12 +34,12 @@ type SectionId =
   | 'servicos'
   | 'projetos'
   | 'participacao'
-  | 'numeros'
   | 'clientes'
   | 'feedback'
   | 'contato'
 
 type ServiceItem = {
+  eyebrow: string
   title: string
   description: string
   icon: LucideIcon
@@ -45,12 +47,22 @@ type ServiceItem = {
 
 type ProjectItem = {
   category: string
-  year: string
   title: string
   description: string
-  result: string
   tags: string[]
-  gradient: string
+  image: string
+  alt: string
+}
+
+type PrincipleItem = {
+  eyebrow: string
+  title: string
+  description: string
+}
+
+type HighlightItem = {
+  title: string
+  description: string
 }
 
 type ParticipationItem = {
@@ -60,14 +72,26 @@ type ParticipationItem = {
   title: string
   description: string
   bullets: string[]
-  metrics: { value: string; label: string }[]
+}
+
+type MetricItem = {
+  value: number
+  suffix?: string
+  label: string
+  description: string
+}
+
+type FeedbackItem = {
+  quote: string
+  author: string
+  role: string
 }
 
 type ContactItem = {
   label: string
   value: string
+  href: string
   icon: LucideIcon
-  href?: string
 }
 
 const sectionIds: SectionId[] = [
@@ -76,270 +100,271 @@ const sectionIds: SectionId[] = [
   'servicos',
   'projetos',
   'participacao',
-  'numeros',
   'clientes',
   'feedback',
   'contato',
 ]
 
 const navItems: { id: Exclude<SectionId, 'home'>; label: string }[] = [
-  { id: 'servicos', label: 'Servicos' },
+  { id: 'quem-somos', label: 'Quem somos' },
+  { id: 'servicos', label: 'Serviços' },
   { id: 'projetos', label: 'Projetos' },
-  { id: 'participacao', label: 'Participacao' },
+  { id: 'participacao', label: 'Participação' },
+  { id: 'clientes', label: 'Clientes' },
+  { id: 'feedback', label: 'Feedback' },
   { id: 'contato', label: 'Contato' },
 ]
 
-const heroStats = [
-  { value: '+200', label: 'Clientes' },
-  { value: '15+', label: 'Anos de mercado' },
-  { value: '98%', label: 'Satisfacao' },
-]
-
-const cultureSignals = [
+const principles: PrincipleItem[] = [
   {
-    title: 'Tecnologia e telecom sob a mesma governanca',
+    eyebrow: 'Nossa missão',
+    title: 'Soluções abrangentes, com governança e entrega consistente.',
     description:
-      'A operacao nao fica fragmentada entre fornecedores, times e camadas tecnicas.',
+      'Oferecer soluções abrangentes em comunicações, incluindo internet via satélite, redes de computadores, links 4G e comunicação GPRS, superando as expectativas de nossos parceiros e clientes por meio de inovação tecnológica e governança de processos.',
   },
   {
-    title: 'Execucao que conversa com o negocio',
+    eyebrow: 'Nossos valores',
+    title: 'Tecnologia com responsabilidade, ética e sustentabilidade.',
     description:
-      'Traduzimos requisito, prazo e criticidade em plano de entrega, rollout e sustentacao.',
+      'Acreditamos que tecnologia deve caminhar lado a lado com responsabilidade. Por isso, atuamos de forma sustentável e ética em todas as nossas operações, minimizando impactos ambientais e contribuindo ativamente para o desenvolvimento das comunidades onde estamos presentes.',
   },
   {
-    title: 'Presenca do kickoff ao pos-go-live',
+    eyebrow: 'Nosso propósito',
+    title: 'Levar comunicação rentável e inovadora para qualquer lugar do Brasil.',
     description:
-      'Entramos no diagnostico, aceleramos a implantacao e seguimos na evolucao da operacao.',
+      'Impulsionar o crescimento e o sucesso dos nossos clientes com soluções de comunicação completas, rentáveis e inovadoras, em qualquer tecnologia e em qualquer lugar do Brasil.',
   },
 ]
 
-const services: ServiceItem[] = [
+const highlights: HighlightItem[] = [
   {
-    title: 'Outsourcing de TI',
+    title: 'Abrangência nacional',
     description:
-      'Squads, atendimento especializado e suporte continuo para operacoes que precisam ganhar escala.',
-    icon: Server,
+      'Presença em todas as capitais e principais cidades do Brasil.',
   },
   {
-    title: 'Telecom e conectividade',
-    description:
-      'Infraestrutura de redes, enlaces, Wi-Fi corporativo e arquitetura para ambientes criticos.',
-    icon: Wifi,
+    title: '5 regiões atendidas',
+    description: 'Norte, Nordeste, Sudeste, Centro-Oeste e Sul.',
   },
   {
-    title: 'Service desk e campo',
+    title: 'Bases próprias e rede de parceiros',
     description:
-      'Atendimento remoto e presencial com rito operacional claro, escalonamento e rastreabilidade.',
-    icon: Headset,
-  },
-  {
-    title: 'Infraestrutura e cloud',
-    description:
-      'Modernizacao de ambientes, padronizacao de ativos e sustentacao de infra hibrida.',
-    icon: Cloud,
-  },
-  {
-    title: 'Seguranca e continuidade',
-    description:
-      'Protecao, monitoramento e resiliencia para operacoes que nao podem parar.',
-    icon: ShieldCheck,
-  },
-  {
-    title: 'Projetos especiais',
-    description:
-      'Rollouts, expansoes, ativacoes, cutovers e frentes tecnicas desenhadas para velocidade.',
-    icon: BarChart3,
-  },
-]
-
-const featuredProjects: ProjectItem[] = [
-  {
-    category: 'Telecom',
-    year: '2025',
-    title: 'Expansao de conectividade para operacao multisede',
-    description:
-      'Planejamento, ativacao e sustentacao de infraestrutura para unidades distribuidas com janelas de implantacao coordenadas.',
-    result: '48 unidades conectadas com padrao unico de rollout',
-    tags: ['Rollout', 'Campo', 'Telecom'],
-    gradient:
-      'linear-gradient(135deg, rgba(16, 36, 89, 0.95) 0%, rgba(8, 14, 30, 0.76) 100%)',
-  },
-  {
-    category: 'Infraestrutura',
-    year: '2024',
-    title: 'Reorganizacao de base tecnica para operacao critica',
-    description:
-      'Revisao de ambiente, estabilizacao de atendimento e ganho de previsibilidade para uma estrutura em aceleracao.',
-    result: 'Governanca de ativos e atendimento redesenhada em ciclos curtos',
-    tags: ['Infra', 'Atendimento', 'SLA'],
-    gradient:
-      'linear-gradient(135deg, rgba(26, 56, 96, 0.95) 0%, rgba(9, 17, 40, 0.8) 100%)',
-  },
-  {
-    category: 'Suporte',
-    year: '2024',
-    title: 'Operacao assistida para fase de crescimento',
-    description:
-      'Suporte remoto, orientacao em campo e acompanhamento pos-implantacao para absorver aumento de demanda sem perda de controle.',
-    result: 'Atendimento e sustentacao organizados para pico operacional',
-    tags: ['Service Desk', 'Niveis de suporte', 'Evolucao'],
-    gradient:
-      'linear-gradient(135deg, rgba(11, 34, 73, 0.94) 0%, rgba(7, 15, 34, 0.78) 100%)',
+      'Estrutura para atender qualquer demanda, em qualquer localidade.',
   },
 ]
 
 const participationItems: ParticipationItem[] = [
   {
     id: 'estrategia',
-    label: 'Estrategia',
-    eyebrow: 'Participacao em projetos',
-    title: 'Entramos cedo para reduzir ruido, dependencias e retrabalho.',
+    label: 'Estratégia',
+    eyebrow: 'Participação em projetos',
+    title: 'Entramos cedo para reduzir ruído, dependências e retrabalho.',
     description:
-      'Antes da execucao, organizamos escopo, prioridade, risco e ritmo de implantacao para o projeto nascer orientado por viabilidade tecnica.',
+      'Antes da execução, organizamos escopo, prioridade, risco e ritmo de implantação para o projeto nascer orientado por viabilidade técnica e operacional.',
     bullets: [
-      'Diagnostico tecnico e leitura de maturidade operacional.',
+      'Diagnóstico técnico e leitura de maturidade operacional.',
       'Desenho de arquitetura, cronograma e marcos de entrega.',
-      'Mapeamento de dependencias, janelas e criticidades do negocio.',
-    ],
-    metrics: [
-      { value: '72h', label: 'kickoff para leitura inicial' },
-      { value: '1 fluxo', label: 'negocio, campo e suporte alinhados' },
-      { value: '0 achismo', label: 'decisao guiada por contexto tecnico' },
+      'Mapeamento de dependências, janelas e criticidades do negócio.',
     ],
   },
   {
     id: 'implantacao',
-    label: 'Implantacao',
-    eyebrow: 'Participacao em projetos',
-    title: 'Executamos rollout, ativacao e entrega com disciplina operacional.',
+    label: 'Implantação',
+    eyebrow: 'Participação em projetos',
+    title: 'Executamos rollout, ativação e entrega com disciplina operacional.',
     description:
-      'Coordenamos frentes tecnicas, times de campo e validacao para que a implantacao aconteca com visibilidade e controle.',
+      'Coordenamos frentes técnicas, times de campo e validação para que a implantação aconteça com visibilidade, controle e documentação adequada.',
     bullets: [
-      'Execucao em campo, checklist tecnico e aceite estruturado.',
-      'Acompanhamento de milestones, tratativa de bloqueios e comunicacao clara.',
-      'Documentacao do que foi entregue para facilitar sustentacao e expansao.',
-    ],
-    metrics: [
-      { value: 'N1 a N3', label: 'escalonamento preparado para a entrega' },
-      { value: '100%', label: 'rastreamento dos marcos de implantacao' },
-      { value: '1 time', label: 'campo, suporte e lideranca sincronizados' },
+      'Execução em campo, checklist técnico e aceite estruturado.',
+      'Acompanhamento de milestones, tratativa de bloqueios e comunicação clara.',
+      'Documentação do que foi entregue para facilitar sustentação e expansão.',
     ],
   },
   {
     id: 'sustentacao',
-    label: 'Sustentacao',
-    eyebrow: 'Participacao em projetos',
-    title: 'Seguimos no pos-go-live para estabilizar, atender e evoluir.',
+    label: 'Sustentação',
+    eyebrow: 'Participação em projetos',
+    title: 'Seguimos no pós-go-live para estabilizar, atender e evoluir.',
     description:
-      'Nao entregamos e saimos. A W13 permanece na camada operacional para manter SLA, absorver incidentes e transformar aprendizado em evolucao.',
+      'A W13 permanece na camada operacional para manter SLA, absorver incidentes e transformar aprendizado em evolução contínua da operação.',
     bullets: [
-      'Monitoramento, atendimento e gestao de incidentes com criterio tecnico.',
-      'Ajustes finos, manutencao preventiva e backlog evolutivo.',
-      'Visibilidade de performance para decisao rapida e continuidade operacional.',
-    ],
-    metrics: [
-      { value: '24/7', label: 'ritmo de observacao e resposta' },
-      { value: 'SLA vivo', label: 'acompanhamento continuo de atendimento' },
-      { value: 'Pos-projeto', label: 'evolucao sem ruptura de contexto' },
+      'Monitoramento, atendimento e gestão de incidentes com critério técnico.',
+      'Ajustes finos, manutenção preventiva e backlog evolutivo.',
+      'Visibilidade de performance para decisão rápida e continuidade operacional.',
     ],
   },
 ]
 
-const metrics = [
+const projectMetrics: MetricItem[] = [
   {
-    value: '261',
-    label: 'Projetos concluidos',
+    value: 261,
+    label: 'Projetos concluídos',
     description:
-      'Entregas fechadas com metodo, governanca tecnica e transicao organizada.',
+      'Entregas fechadas com método, governança técnica e transição organizada.',
   },
   {
-    value: '259',
+    value: 259,
     label: 'Atendimentos executados',
     description:
-      'Chamados, visitas tecnicas e frentes operacionais conduzidas com previsibilidade.',
+      'Chamados, visitas técnicas e frentes operacionais conduzidas com previsibilidade.',
   },
   {
-    value: '2,354+',
+    value: 2354,
+    suffix: '+',
     label: 'Clientes atendidos',
     description:
-      'Operacoes apoiadas em conectividade, sustentacao, telecom e outsourcing.',
+      'Operações apoiadas em conectividade, sustentação, telecom e outsourcing.',
   },
 ]
 
-const clientProfiles = [
+const services: ServiceItem[] = [
   {
-    title: 'Operadoras e provedores',
+    eyebrow: 'Continuidade operacional',
+    title: 'Manutenção de TI e Telecom',
     description:
-      'Expansao de cobertura, padronizacao operacional e apoio tecnico para ambientes de alta demanda.',
+      'Manutenção preventiva e corretiva de equipamentos de tecnologia da informação e telecomunicações, garantindo a continuidade operacional da sua infraestrutura.',
+    icon: Server,
   },
   {
-    title: 'Corporacoes multisede',
+    eyebrow: 'Cobertura dedicada',
+    title: 'Implantação de 4G Privado (LTE)',
     description:
-      'Operacoes com varias unidades, rollout constante e necessidade de uma base tecnica consistente.',
+      'Implementação e manutenção de redes 4G privadas para ambientes corporativos, industriais e de missão crítica, com cobertura, segurança e performance dedicadas.',
+    icon: Wifi,
   },
   {
-    title: 'Industria e logistica',
+    eyebrow: 'Conectividade remota',
+    title: 'Internet via Satélite (VSAT)',
     description:
-      'Infraestrutura, conectividade e resposta rapida para ambientes que nao param.',
+      'Implantação de sistemas satelitais VSAT para conectividade em regiões remotas ou de difícil acesso, onde outras tecnologias não chegam.',
+    icon: Cloud,
   },
   {
-    title: 'Varejo e franquias',
+    eyebrow: 'Infraestrutura física',
+    title: 'Cabeamento Estruturado',
     description:
-      'Ativacoes, suporte e telemetria para pontos que precisam operar com padrao unico.',
+      'Projeto e execução de infraestrutura de cabeamento estruturado para redes corporativas, do planejamento à certificação, com padrões internacionais de qualidade.',
+    icon: BarChart3,
   },
   {
-    title: 'Saude e educacao',
+    eyebrow: 'Projetos completos',
+    title: 'Projetos de Infraestrutura Telecom',
     description:
-      'Ambientes que exigem estabilidade, continuidade e acompanhamento tecnico proximo.',
+      'Desenvolvimento e execução de projetos completos de infraestrutura em telecomunicações, incluindo montagem de rack, site survey, testes com teleportos e migrações de plataformas.',
+    icon: ShieldCheck,
   },
   {
-    title: 'Setor publico e facilities',
+    eyebrow: 'Gestão end-to-end',
+    title: 'Outsourcing de TI',
     description:
-      'Projetos documentados, execucao coordenada e sustentacao com visibilidade.',
+      'Gestão completa da infraestrutura de tecnologia da sua empresa, incluindo implantação de sistemas, treinamento de equipes, suporte contínuo e gerenciamento de roteadores e redes.',
+    icon: Headset,
   },
 ]
 
-const feedbackItems = [
+const projects: ProjectItem[] = [
+  {
+    category: 'Telecomunicações',
+    title: 'Implantação de Rede VSAT em Área Remota',
+    description:
+      'Implantação de sistema de internet via satélite para operação em região de difícil acesso, garantindo conectividade estável e contínua para equipes de campo com zero downtime operacional.',
+    tags: ['VSAT', 'Satélite', 'Conectividade', 'Infraestrutura'],
+    image: '/project-vsat.svg',
+    alt: 'Ilustração de rede VSAT com antena satelital e conectividade remota.',
+  },
+  {
+    category: '4G Privado',
+    title: 'Rede LTE Privada para Ambiente Industrial',
+    description:
+      'Implementação de rede 4G privada, baseada em LTE, em ambiente industrial, com cobertura dedicada, baixa latência e segurança de dados para operações críticas e contínuas.',
+    tags: ['LTE', '4G Privado', 'Redes Corporativas'],
+    image: '/project-lte.svg',
+    alt: 'Ilustração de torre LTE privada em ambiente industrial.',
+  },
+  {
+    category: 'Infraestrutura',
+    title: 'Projeto de Cabeamento Estruturado Multisede',
+    description:
+      'Planejamento, execução e certificação de infraestrutura de cabeamento estruturado para empresa com múltiplas unidades, integrando todas as sedes em uma única rede corporativa de alto desempenho.',
+    tags: ['Cabeamento', 'Site Survey', 'Rack', 'Certificação'],
+    image: '/project-cabling.svg',
+    alt: 'Ilustração de racks, cabos e infraestrutura de rede multisede.',
+  },
+  {
+    category: 'Outsourcing',
+    title: 'Gestão Terceirizada de TI para Grupo Empresarial',
+    description:
+      'Outsourcing completo da infraestrutura de TI com suporte técnico dedicado, gerenciamento de roteadores, implantação de sistemas e treinamento das equipes internas.',
+    tags: ['Outsourcing', 'Suporte TI', 'Gestão de Infraestrutura'],
+    image: '/project-outsourcing.svg',
+    alt: 'Ilustração de operação de TI terceirizada com painéis e monitoramento.',
+  },
+]
+
+const clients = [
+  'Global Eagle',
+  'Hughes',
+  'Kroton',
+  'Level 3 Communications',
+  'CenturyLink',
+  'Cirion',
+  'Embratel',
+  'NTT / Cisco',
+  'EBS Perfurações',
+  'Perbras',
+]
+
+const feedbackItems: FeedbackItem[] = [
   {
     quote:
-      'A W13 organizou a operacao e trouxe previsibilidade onde antes havia urgencia o tempo todo.',
-    author: 'Diretoria de operacoes',
-    role: 'Grupo logistico multisede',
+      'A W13 organizou a operação e trouxe previsibilidade onde antes havia urgência o tempo todo.',
+    author: 'Diretoria de Operações',
+    role: 'Grupo logístico multisede',
   },
   {
     quote:
-      'O diferencial foi unir implantacao e sustentacao no mesmo raciocinio tecnico. Isso reduziu muito o retrabalho.',
-    author: 'Lideranca de infraestrutura',
-    role: 'Rede corporativa em expansao',
+      'O diferencial foi unir implantação e sustentação no mesmo raciocínio técnico. Isso reduziu muito o retrabalho.',
+    author: 'Liderança de Infraestrutura',
+    role: 'Rede corporativa em expansão',
   },
   {
     quote:
-      'Nao foi uma entrega de prateleira. O time entendeu o contexto, ajustou o plano e executou com ritmo.',
-    author: 'Gestao de tecnologia',
-    role: 'Operacao com alta criticidade',
+      'Não foi uma entrega de prateleira. O time entendeu o contexto, ajustou o plano e executou com ritmo.',
+    author: 'Gestão de Tecnologia',
+    role: 'Operação com alta criticidade',
   },
 ]
 
 const contactItems: ContactItem[] = [
   {
-    label: 'Telefone',
-    value: '(27) XXXX-XXXX',
+    label: 'Telefone e WhatsApp',
+    value: '(89) 99979-5973',
+    href: 'https://wa.me/5589999795973',
     icon: Phone,
   },
   {
     label: 'E-mail',
     value: 'contato@w13.com.br',
-    icon: Mail,
     href: 'mailto:contato@w13.com.br',
+    icon: Mail,
   },
   {
-    label: 'Base operacional',
-    value: 'Espirito Santo, Brasil',
-    icon: MapPin,
+    label: 'Instagram',
+    value: '@w13tecnologia',
+    href: 'https://www.instagram.com/w13tecnologia',
+    icon: Instagram,
+  },
+  {
+    label: 'Site',
+    value: 'www.w13.com.br',
+    href: 'https://www.w13.com.br',
+    icon: Globe,
   },
 ]
 
 const containerClass = 'mx-auto w-[min(1200px,calc(100%-2rem))]'
+const formFieldClassName =
+  'w-full rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-white/38 focus:border-white/20 focus:bg-white/[0.06]'
 
 function App() {
   const prefersReducedMotion = useReducedMotion()
@@ -392,6 +417,16 @@ function App() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : ''
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isMobileMenuOpen])
+
+  const handleNavigation = () => setIsMobileMenuOpen(false)
+
   return (
     <LazyMotion features={domAnimation}>
       <div className="site-shell">
@@ -403,7 +438,7 @@ function App() {
         >
           <div
             className={cn(
-              `${containerClass} nav-shell liquid-glass`,
+              `${containerClass} nav-shell liquid-glass pl-6 sm:pl-10`,
               isHeaderScrolled
                 ? 'border-transparent bg-black/56'
                 : 'border-transparent bg-black/36',
@@ -416,7 +451,7 @@ function App() {
               <img
                 src="/logo_navbar.svg"
                 alt="W13 Tecnologia"
-                className="h-8 w-auto sm:h-9"
+                className="mr-10 h-6 w-auto sm:h-7"
               />
             </a>
 
@@ -450,10 +485,10 @@ function App() {
                 asChild
                 variant="glass"
                 size="default"
-                className="border border-white/20 px-4 py-2 text-[0.62rem] uppercase tracking-[0.2em] text-white"
+                className="border-0 px-4 py-2 text-[0.62rem] uppercase tracking-[0.2em] text-white shadow-none"
               >
                 <a href="#contato">
-                  Falar com a W13
+                  Fale com nossa equipe
                   <ArrowRight className="size-4" />
                 </a>
               </Button>
@@ -463,7 +498,7 @@ function App() {
               type="button"
               aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
               aria-expanded={isMobileMenuOpen}
-              className="inline-flex size-9 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white transition-colors hover:bg-white/10 lg:hidden"
+              className="inline-flex size-9 items-center justify-center rounded-full border-0 bg-white/5 text-white transition-colors hover:bg-white/10 lg:hidden"
               onClick={() => setIsMobileMenuOpen((current) => !current)}
             >
               {isMobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -479,13 +514,13 @@ function App() {
                 transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
                 className={`${containerClass} mt-3 lg:hidden`}
               >
-                <div className="liquid-glass rounded-[1.35rem] border border-white/32 p-3">
+                <div className="liquid-glass rounded-[1.35rem] border-0 p-3">
                   {navItems.map((item) => (
                     <a
                       key={item.id}
                       href={`#${item.id}`}
                       className="block rounded-[1.1rem] px-4 py-3 text-sm text-white/84 transition-colors hover:bg-white/[0.08]"
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      onClick={handleNavigation}
                     >
                       {item.label}
                     </a>
@@ -494,10 +529,10 @@ function App() {
                     asChild
                     variant="glass"
                     size="lg"
-                    className="mt-2 justify-center border border-white/20 text-[0.68rem] uppercase tracking-[0.2em] text-white"
+                    className="mt-2 justify-center border-0 text-[0.68rem] uppercase tracking-[0.2em] text-white shadow-none"
                   >
-                    <a href="#contato" onClick={() => setIsMobileMenuOpen(false)}>
-                      Falar com a W13
+                    <a href="#contato" onClick={handleNavigation}>
+                      Fale com nossa equipe
                       <ArrowRight className="size-4" />
                     </a>
                   </Button>
@@ -513,7 +548,7 @@ function App() {
             className="relative flex min-h-screen flex-col overflow-hidden"
           >
             <h2 className="sr-only">
-              Home da W13 Tecnologia com outsourcing de TI e telecomunicacoes
+              Home da W13 Tecnologia com outsourcing de TI e telecomunicações
             </h2>
 
             <div
@@ -541,14 +576,6 @@ function App() {
             ) : null}
 
             <div className="hero-grid absolute inset-0 z-0" aria-hidden="true" />
-            <div
-              className="absolute bottom-0 left-0 right-0 z-0 h-[72%] bg-[linear-gradient(180deg,rgba(6,9,19,0)_0%,rgba(6,9,19,0.14)_14%,rgba(6,9,19,0.48)_34%,rgba(6,9,19,0.82)_58%,rgba(6,9,19,0.98)_82%,rgba(6,9,19,1)_100%)]"
-              aria-hidden="true"
-            />
-            <div
-              className="absolute bottom-[-4rem] left-0 right-0 z-0 h-44 bg-background blur-3xl"
-              aria-hidden="true"
-            />
 
             <div
               className={cn(
@@ -556,28 +583,30 @@ function App() {
                 'relative z-10 flex flex-1 flex-col items-center justify-center px-0 pb-20 pt-32 text-center sm:pb-28 sm:pt-36 lg:pt-40',
               )}
             >
-              <SectionReveal className="max-w-[20rem] sm:max-w-3xl xl:max-w-5xl">
-                <h1 className="font-display text-[2.8rem] leading-[0.94] font-medium tracking-[-0.05em] text-[hsl(var(--ivory))] sm:text-6xl lg:text-7xl xl:text-[6.2rem]">
-                  Tecnologia que <em className="not-italic text-accent">move</em>{' '}
-                  o seu negocio.
+              <SectionReveal
+                className="max-w-[20rem] sm:max-w-3xl xl:max-w-5xl"
+              >
+                <h1 className="font-display text-[2.85rem] leading-[0.94] font-medium tracking-[-0.05em] text-[hsl(var(--ivory))] sm:text-6xl lg:text-7xl xl:text-[6.35rem]">
+                  Tecnologia que <span className="text-accent">move</span> o seu
+                  negócio.
                 </h1>
               </SectionReveal>
 
-              <SectionReveal delay={0.08} className="mt-6 max-w-[34rem]">
-                <p className="text-[0.95rem] leading-relaxed text-white/74 sm:text-base md:text-lg">
-                  Especialistas em outsourcing de tecnologia e telecomunicacoes.
-                  Solucoes integradas para empresas que precisam de escala,
-                  agilidade e resultado real.
+              <SectionReveal delay={0.08} className="mt-6 max-w-[35rem]">
+                <p className="text-[1rem] leading-relaxed text-white/76 sm:text-[1.05rem] md:text-lg">
+                  Especialistas em outsourcing de tecnologia e
+                  telecomunicações. Soluções integradas para empresas que
+                  precisam de escala, agilidade e resultado real.
                 </p>
               </SectionReveal>
 
               <SectionReveal
                 delay={0.16}
-                className="mt-10 flex w-full max-w-[280px] flex-col gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:gap-4"
+                className="mt-10 flex w-full max-w-[300px] flex-col gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:gap-4"
               >
                 <Button asChild size="lg" className="w-full justify-center sm:w-auto">
                   <a href="#contato">
-                    Fale com um especialista
+                    Fale com nossa equipe
                     <ArrowRight className="size-4" />
                   </a>
                 </Button>
@@ -585,114 +614,77 @@ function App() {
                   asChild
                   variant="glass"
                   size="lg"
-                  className="w-full justify-center border border-white/20 text-white sm:w-auto"
+                  className="w-full justify-center border border-white/12 text-white sm:w-auto"
                 >
-                  <a href="#servicos">Conhecer solucoes</a>
+                  <a href="#servicos">Conhecer serviços</a>
                 </Button>
               </SectionReveal>
             </div>
-
-            <SectionReveal
-              delay={0.24}
-              className={cn(containerClass, 'relative z-10 pb-10')}
-            >
-              <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:divide-x sm:divide-white/10 sm:gap-0">
-                {heroStats.map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex flex-col items-center px-8 py-2"
-                  >
-                    <span className="font-display text-[1.85rem] tracking-tight text-[hsl(var(--ivory))]">
-                      {item.value}
-                    </span>
-                    <span className="mt-1 text-[0.72rem] uppercase tracking-[0.24em] text-white/54">
-                      {item.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </SectionReveal>
           </section>
 
           <section
             id="quem-somos"
-            className="relative z-10 -mt-[4.5rem] pb-24 pt-[4.5rem] sm:-mt-24 sm:pb-28 sm:pt-24 lg:-mt-28 lg:pt-28"
+            className="relative z-10 pb-24 pt-12 sm:pb-28 sm:pt-20 lg:pt-24"
           >
             <div
-              className="absolute inset-x-0 top-[-8rem] h-40 bg-[linear-gradient(180deg,rgba(6,9,19,0)_0%,rgba(6,9,19,0.42)_24%,rgba(6,9,19,0.88)_58%,rgba(6,9,19,1)_100%)] blur-2xl sm:top-[-9rem] sm:h-44 lg:top-[-10rem] lg:h-52"
+              className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,hsl(var(--background))_0%,rgba(6,9,19,0.82)_52%,rgba(6,9,19,0)_100%)] sm:h-32 lg:h-36"
               aria-hidden="true"
             />
-            <div
-              className="absolute inset-x-0 top-0 h-28 bg-[linear-gradient(180deg,hsl(var(--background))_0%,rgba(6,9,19,0.82)_54%,rgba(6,9,19,0)_100%)] sm:h-32 lg:h-36"
-              aria-hidden="true"
-            />
+
             <div className={containerClass}>
-              <SectionReveal className="grid gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:items-end">
+              <SectionReveal className="grid gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-end">
                 <div className="space-y-5">
-                  <span className="section-chip">Quem somos?</span>
+                  <span className="section-chip">Quem somos</span>
                   <h2 className="section-title max-w-[12ch]">
-                    A camada operacional que conecta tecnologia, telecom e
-                    crescimento.
+                    Soluções integradas para operações conectadas em todo o
+                    Brasil.
                   </h2>
                 </div>
-                <p className="section-copy max-w-[37rem]">
-                  A W13 organiza outsourcing, conectividade e atendimento tecnico
-                  para empresas que precisam crescer com ritmo, padrao e visibilidade.
-                  Entramos no desenho, seguimos na execucao e permanecemos na
-                  sustentacao para que a operacao nao perca contexto ao longo do
-                  projeto.
+                <p className="section-copy max-w-[40rem]">
+                  A W13 Tecnologia é uma empresa especializada em soluções
+                  integradas de comunicações, tecnologia e telecomunicações.
+                  Nossa atuação vai desde a implantação de redes e sistemas até
+                  a gestão completa de infraestrutura, sempre com foco em
+                  inovação, excelência e resultados concretos para nossos
+                  clientes.
                 </p>
               </SectionReveal>
 
-              <div className="mt-10 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-                <SectionReveal className="cut-panel p-6 sm:p-8">
-                  <div className="flex h-full flex-col justify-between gap-8">
-                    <div className="space-y-4">
-                      <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
-                        Como pensamos
-                      </p>
-                      <p className="max-w-[24ch] text-2xl font-medium leading-tight text-[hsl(var(--ivory))] sm:text-3xl">
-                        Nao entregamos apenas frentes tecnicas. Organizamos a
-                        operacao para ela continuar performando depois da entrega.
-                      </p>
-                    </div>
-
-                    <div className="grid gap-4 sm:grid-cols-3">
-                      {cultureSignals.map((item) => (
-                        <div
-                          key={item.title}
-                          className="rounded-[1.35rem] border border-white/8 bg-white/[0.04] p-5"
-                        >
-                          <p className="text-sm font-medium text-white">{item.title}</p>
-                          <p className="mt-3 text-sm leading-6 text-white/62">
-                            {item.description}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </SectionReveal>
-
-                <div className="grid gap-4">
-                  <SectionReveal delay={0.08} className="cut-panel p-6">
+              <div className="mt-10 grid gap-4 lg:grid-cols-3">
+                {principles.map((item, index) => (
+                  <SectionReveal
+                    key={item.title}
+                    delay={index * 0.06}
+                    className="cut-panel p-6 sm:p-8"
+                  >
                     <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
-                      Postura
+                      {item.eyebrow}
                     </p>
-                    <p className="mt-4 text-xl font-medium leading-tight text-white">
-                      Leitura tecnica forte, comunicacao objetiva e execucao sem
-                      cenografia.
+                    <h3 className="mt-5 text-[1.6rem] font-medium leading-tight text-[hsl(var(--ivory))]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-5 text-sm leading-7 text-white/68 sm:text-base">
+                      {item.description}
                     </p>
                   </SectionReveal>
+                ))}
+              </div>
 
-                  <SectionReveal delay={0.14} className="cut-panel p-6">
-                    <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
-                      Direcao
+              <div className="mt-10 grid gap-4 lg:grid-cols-3">
+                {highlights.map((item, index) => (
+                  <SectionReveal
+                    key={item.title}
+                    delay={0.12 + index * 0.06}
+                    className="stat-panel"
+                  >
+                    <p className="text-[1.45rem] font-medium leading-tight text-[hsl(var(--ivory))]">
+                      {item.title}
                     </p>
-                    <p className="mt-4 text-xl font-medium leading-tight text-white">
-                      Escalamos operacoes sem perder controle de ponta a ponta.
+                    <p className="mt-4 text-sm leading-7 text-white/62">
+                      {item.description}
                     </p>
                   </SectionReveal>
-                </div>
+                ))}
               </div>
             </div>
           </section>
@@ -701,50 +693,86 @@ function App() {
             <div className={containerClass}>
               <SectionReveal className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                 <div className="space-y-5">
-                  <span className="section-chip">Servicos</span>
-                  <h2 className="section-title max-w-[11ch]">
-                    Frentes desenhadas para operar com velocidade e criterio.
+                  <span className="section-chip">O que fazemos</span>
+                  <h2 className="section-title max-w-[12ch]">
+                    Soluções completas em tecnologia e telecomunicações.
                   </h2>
                 </div>
-                <p className="section-copy max-w-[35rem]">
-                  Unimos atendimento, conectividade, infraestrutura e sustentacao em
-                  um desenho operacional que conversa com a realidade de cada
-                  empresa.
+                <p className="section-copy max-w-[40rem]">
+                  Com expertise técnica e atuação nacional, entregamos serviços
+                  end-to-end para empresas que precisam de infraestrutura
+                  confiável, conectividade de alto desempenho e suporte
+                  especializado.
                 </p>
               </SectionReveal>
 
-              <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {services.map((service, index) => {
-                  const Icon = service.icon
+              <div className="mt-12 grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+                <SectionReveal className="cut-panel overflow-hidden p-4 sm:p-5">
+                  <div className="space-y-5">
+                    <img
+                      src="/services-showcase.svg"
+                      alt="Ilustração de operação integrada com racks, painéis e conectividade de telecomunicações"
+                      className="w-full rounded-[1.55rem] border border-white/10 bg-white/[0.03]"
+                    />
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-[1.35rem] border border-white/8 bg-white/[0.04] p-5">
+                        <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
+                          Atuação nacional
+                        </p>
+                        <p className="mt-3 text-sm leading-7 text-white/68">
+                          Estrutura para implantar, sustentar e escalar projetos
+                          em diferentes estados e contextos operacionais.
+                        </p>
+                      </div>
+                      <div className="rounded-[1.35rem] border border-white/8 bg-white/[0.04] p-5">
+                        <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
+                          Entrega end-to-end
+                        </p>
+                        <p className="mt-3 text-sm leading-7 text-white/68">
+                          Da infraestrutura física ao suporte contínuo, com uma
+                          mesma linha técnica e governança de processos.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </SectionReveal>
 
-                  return (
-                    <SectionReveal
-                      key={service.title}
-                      delay={index * 0.05}
-                      className="cut-panel h-full p-6 sm:p-7"
-                    >
-                      <m.article
-                        whileHover={
-                          prefersReducedMotion ? undefined : { y: -6, scale: 1.01 }
-                        }
-                        transition={{ duration: 0.22 }}
-                        className="flex h-full flex-col gap-6"
+                <div className="grid gap-4 md:grid-cols-2">
+                  {services.map((service, index) => {
+                    const Icon = service.icon
+
+                    return (
+                      <SectionReveal
+                        key={service.title}
+                        delay={index * 0.05}
+                        className="cut-panel h-full p-6 sm:p-7"
                       >
-                        <div className="service-icon">
-                          <Icon className="size-5" />
-                        </div>
-                        <div className="space-y-3">
-                          <h3 className="text-[1.25rem] font-medium text-white">
-                            {service.title}
-                          </h3>
-                          <p className="text-sm leading-7 text-white/64">
-                            {service.description}
-                          </p>
-                        </div>
-                      </m.article>
-                    </SectionReveal>
-                  )
-                })}
+                        <m.article
+                          whileHover={
+                            prefersReducedMotion ? undefined : { y: -6, scale: 1.01 }
+                          }
+                          transition={{ duration: 0.22 }}
+                          className="flex h-full flex-col gap-6"
+                        >
+                          <div className="service-icon">
+                            <Icon className="size-5" />
+                          </div>
+                          <div className="space-y-3">
+                            <p className="text-[0.7rem] uppercase tracking-[0.22em] text-white/44">
+                              {service.eyebrow}
+                            </p>
+                            <h3 className="text-[1.25rem] font-medium text-white">
+                              {service.title}
+                            </h3>
+                            <p className="text-sm leading-7 text-white/64">
+                              {service.description}
+                            </p>
+                          </div>
+                        </m.article>
+                      </SectionReveal>
+                    )
+                  })}
+                </div>
               </div>
             </div>
           </section>
@@ -753,20 +781,21 @@ function App() {
             <div className={containerClass}>
               <SectionReveal className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                 <div className="space-y-5">
-                  <span className="section-chip">Projetos</span>
+                  <span className="section-chip">Casos de Sucesso</span>
                   <h2 className="section-title max-w-[12ch]">
-                    Entregas pensadas para gerar ritmo operacional, nao apenas
-                    ativacao.
+                    Projetos que transformaram operações.
                   </h2>
                 </div>
-                <p className="section-copy max-w-[35rem]">
-                  Cada projeto combina planejamento, leitura tecnica e sustentacao
-                  para que a entrega continue fazendo sentido depois da implantacao.
+                <p className="section-copy max-w-[42rem]">
+                  Da implantação à manutenção, entregamos projetos de alto
+                  impacto para empresas de diferentes setores em todo o Brasil.
+                  Cada projeto é uma prova do nosso compromisso com qualidade,
+                  prazo e resultado.
                 </p>
               </SectionReveal>
 
-              <div className="mt-12 grid gap-4 xl:grid-cols-3">
-                {featuredProjects.map((project, index) => (
+              <div className="mt-12 grid gap-4 md:grid-cols-2">
+                {projects.map((project, index) => (
                   <SectionReveal
                     key={project.title}
                     delay={index * 0.06}
@@ -777,31 +806,27 @@ function App() {
                         prefersReducedMotion ? undefined : { y: -8, scale: 1.01 }
                       }
                       transition={{ duration: 0.24 }}
-                      className="flex h-full flex-col justify-between gap-10"
+                      className="flex h-full flex-col gap-6"
                     >
-                      <div className="space-y-6">
-                        <div
-                          className="project-card__surface"
-                          style={{ background: project.gradient }}
-                        >
-                          <div className="project-card__meta">
-                            <span>{project.category}</span>
-                            <span>{project.year}</span>
-                          </div>
-                          <div className="space-y-4">
-                            <h3 className="text-2xl font-medium leading-tight text-[hsl(var(--ivory))]">
-                              {project.title}
-                            </h3>
-                            <p className="text-sm leading-7 text-white/74">
-                              {project.description}
-                            </p>
-                          </div>
-                        </div>
+                      <img
+                        src={project.image}
+                        alt={project.alt}
+                        className="h-56 w-full rounded-[1.55rem] border border-white/10 object-cover"
+                      />
 
-                        <p className="text-sm leading-7 text-white/68">{project.result}</p>
+                      <div className="space-y-4">
+                        <div className="project-card__meta">
+                          <span>{project.category}</span>
+                        </div>
+                        <h3 className="text-[1.75rem] font-medium leading-tight text-[hsl(var(--ivory))]">
+                          {project.title}
+                        </h3>
+                        <p className="text-sm leading-7 text-white/72">
+                          {project.description}
+                        </p>
                       </div>
 
-                      <div className="flex flex-wrap gap-2">
+                      <div className="mt-auto flex flex-wrap gap-2">
                         {project.tags.map((tag) => (
                           <span key={tag} className="project-tag">
                             {tag}
@@ -818,15 +843,15 @@ function App() {
           <section id="participacao" className="py-24 sm:py-28">
             <div className={containerClass}>
               <SectionReveal className="space-y-5">
-                <span className="section-chip">Participacao em projetos</span>
-                <h2 className="section-title max-w-[12ch]">
-                  Atuamos em pontos diferentes do projeto sem perder a mesma linha
-                  de raciocinio.
+                <span className="section-chip">Participação em projetos</span>
+                <h2 className="section-title max-w-[13ch]">
+                  Atuamos em pontos diferentes do projeto sem perder a mesma
+                  linha de raciocínio.
                 </h2>
-                <p className="section-copy max-w-[38rem]">
-                  A W13 pode entrar no desenho, acelerar a implantacao ou assumir a
-                  sustentacao. O valor esta em manter criterio, contexto e ritmo em
-                  cada etapa.
+                <p className="section-copy max-w-[42rem]">
+                  A W13 pode entrar no desenho, acelerar a implantação ou
+                  assumir a sustentação. O valor está em manter critério,
+                  contexto e ritmo em cada etapa.
                 </p>
               </SectionReveal>
 
@@ -891,27 +916,11 @@ function App() {
                     <p className="mt-5 max-w-[34rem] text-sm leading-7 text-white/68 sm:text-base">
                       {activeParticipationItem.description}
                     </p>
-
-                    <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                      {activeParticipationItem.metrics.map((metric) => (
-                        <div
-                          key={metric.label}
-                          className="rounded-[1.35rem] border border-white/8 bg-white/[0.04] p-5"
-                        >
-                          <p className="text-2xl font-medium text-[hsl(var(--ivory))]">
-                            {metric.value}
-                          </p>
-                          <p className="mt-3 text-sm leading-6 text-white/60">
-                            {metric.label}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
                   </div>
 
                   <div className="cut-panel p-6 sm:p-8">
                     <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
-                      Escopo de atuacao
+                      Escopo de atuação
                     </p>
                     <div className="mt-6 space-y-4">
                       {activeParticipationItem.bullets.map((bullet) => (
@@ -927,26 +936,19 @@ function App() {
                   </div>
                 </m.div>
               </AnimatePresence>
-            </div>
-          </section>
 
-          <section id="numeros" className="py-24 sm:py-28">
-            <div className={containerClass}>
-              <SectionReveal className="space-y-5">
-                <span className="section-chip">Indicadores</span>
-                <h2 className="section-title max-w-[13ch]">
-                  Numeros que mostram consistencia operacional.
-                </h2>
-              </SectionReveal>
-
-              <div className="mt-12 grid gap-4 lg:grid-cols-3">
-                {metrics.map((metric, index) => (
+              <div className="mt-10 grid gap-4 lg:grid-cols-3">
+                {projectMetrics.map((metric, index) => (
                   <SectionReveal
                     key={metric.label}
-                    delay={index * 0.06}
+                    delay={0.12 + index * 0.06}
                     className="stat-panel"
                   >
-                    <p className="stat-panel__value">{metric.value}</p>
+                    <CountUp
+                      value={metric.value}
+                      suffix={metric.suffix}
+                      className="stat-panel__value"
+                    />
                     <h3 className="mt-5 text-xl font-medium text-white">
                       {metric.label}
                     </h3>
@@ -965,26 +967,23 @@ function App() {
                 <div className="space-y-5">
                   <span className="section-chip">Clientes atendidos</span>
                   <h2 className="section-title max-w-[11ch]">
-                    Estruturas diferentes. O mesmo nivel de rigor operacional.
+                    Empresas que confiaram projetos críticos à W13.
                   </h2>
-                  <p className="section-copy max-w-[34rem]">
-                    Atuamos em ambientes que precisam de suporte real, conectividade
-                    confiavel e uma equipe que consiga transformar demanda tecnica em
-                    operacao estavel.
+                  <p className="section-copy max-w-[38rem]">
+                    Atuamos lado a lado com empresas de conectividade,
+                    telecomunicações, educação, energia e indústria, sustentando
+                    operações que exigem resposta técnica e execução confiável.
                   </p>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                  {clientProfiles.map((profile, index) => (
+                  {clients.map((client, index) => (
                     <SectionReveal
-                      key={profile.title}
-                      delay={index * 0.05}
-                      className="profile-panel"
+                      key={client}
+                      delay={index * 0.04}
+                      className="profile-panel flex min-h-[124px] items-center justify-center text-center"
                     >
-                      <p className="text-lg font-medium text-white">{profile.title}</p>
-                      <p className="mt-4 text-sm leading-7 text-white/62">
-                        {profile.description}
-                      </p>
+                      <p className="text-base font-medium text-white">{client}</p>
                     </SectionReveal>
                   ))}
                 </div>
@@ -997,7 +996,8 @@ function App() {
               <SectionReveal className="space-y-5">
                 <span className="section-chip">Feedback</span>
                 <h2 className="section-title max-w-[12ch]">
-                  Percepcao de quem precisou organizar operacao e continuar escalando.
+                  Percepções de quem precisou organizar a operação e seguir
+                  escalando.
                 </h2>
               </SectionReveal>
 
@@ -1033,80 +1033,139 @@ function App() {
         <footer id="contato" className="pb-10 pt-8 sm:pb-12">
           <div className={containerClass}>
             <SectionReveal className="cut-panel overflow-hidden p-6 sm:p-8 lg:p-10">
-              <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-end">
-                <div className="space-y-5">
-                  <span className="section-chip">Footer</span>
-                  <h2 className="section-title max-w-[11ch]">
-                    Pronto para dar ritmo, escala e controle para a operacao?
-                  </h2>
-                  <p className="section-copy max-w-[34rem]">
-                    Sem formulario. Contato direto para conversar sobre diagnostico,
-                    rollout, atendimento e sustentacao tecnica.
-                  </p>
+              <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src="/logo_navbar.svg"
+                      alt="W13 Tecnologia"
+                      className="h-9 w-auto opacity-90"
+                    />
+                    <div className="space-y-1">
+                      <p className="font-display text-xl text-[hsl(var(--ivory))]">
+                        Soluções em Tecnologia
+                      </p>
+                      <p className="text-sm text-white/46">
+                        Abra as portas para a tecnologia.
+                      </p>
+                    </div>
+                  </div>
 
-                  <div className="flex flex-col gap-4 sm:flex-row">
-                    <Button
-                      asChild
-                      size="lg"
-                      className="justify-center text-[0.74rem] uppercase tracking-[0.24em] sm:justify-start"
-                    >
-                      <a href="mailto:contato@w13.com.br">
-                        Enviar e-mail
-                        <ArrowRight className="size-4" />
-                      </a>
-                    </Button>
-                    <Button
-                      asChild
-                      variant="glass"
-                      size="lg"
-                      className="justify-center border border-white/12 px-8 text-[0.74rem] uppercase tracking-[0.24em] text-white sm:justify-start"
-                    >
-                      <a href="#home">Voltar ao topo</a>
-                    </Button>
+                  <div className="space-y-5">
+                    <span className="section-chip">Entre em contato</span>
+                    <h2 className="section-title max-w-[10ch]">
+                      Vamos conversar sobre o seu projeto.
+                    </h2>
+                    <p className="section-copy max-w-[36rem]">
+                      Nossa equipe está pronta para entender as necessidades da
+                      sua empresa e apresentar a solução mais adequada.
+                      Respondemos em até 24 horas úteis.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {contactItems.map((item) => {
+                      const Icon = item.icon
+
+                      return (
+                        <a key={item.label} href={item.href} target="_blank" rel="noreferrer">
+                          <div className="contact-panel h-full">
+                            <div className="service-icon">
+                              <Icon className="size-5" />
+                            </div>
+                            <div className="space-y-2">
+                              <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
+                                {item.label}
+                              </p>
+                              <p className="text-sm text-white/84">{item.value}</p>
+                            </div>
+                          </div>
+                        </a>
+                      )
+                    })}
                   </div>
                 </div>
 
-                <div className="grid gap-4">
-                  {contactItems.map((item) => {
-                    const Icon = item.icon
-                    const content = (
-                      <div className="contact-panel">
-                        <div className="service-icon">
-                          <Icon className="size-5" />
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
-                            {item.label}
-                          </p>
-                          <p className="text-sm text-white/84">{item.value}</p>
-                        </div>
-                      </div>
-                    )
+                <div className="cut-panel p-6 sm:p-8">
+                  <form action="#" method="POST" className="grid gap-4">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <label className="space-y-2">
+                        <span className="text-[0.72rem] uppercase tracking-[0.2em] text-white/46">
+                          Nome completo
+                        </span>
+                        <input
+                          type="text"
+                          name="nome"
+                          placeholder="Seu nome"
+                          className={formFieldClassName}
+                        />
+                      </label>
 
-                    return item.href ? (
-                      <a key={item.label} href={item.href}>
-                        {content}
-                      </a>
-                    ) : (
-                      <div key={item.label}>{content}</div>
-                    )
-                  })}
+                      <label className="space-y-2">
+                        <span className="text-[0.72rem] uppercase tracking-[0.2em] text-white/46">
+                          E-mail corporativo
+                        </span>
+                        <input
+                          type="email"
+                          name="email"
+                          placeholder="seu.nome@empresa.com.br"
+                          className={formFieldClassName}
+                        />
+                      </label>
+                    </div>
+
+                    <label className="space-y-2">
+                      <span className="text-[0.72rem] uppercase tracking-[0.2em] text-white/46">
+                        Empresa
+                      </span>
+                      <input
+                        type="text"
+                        name="empresa"
+                        placeholder="Nome da empresa"
+                        className={formFieldClassName}
+                      />
+                    </label>
+
+                    <label className="space-y-2">
+                      <span className="text-[0.72rem] uppercase tracking-[0.2em] text-white/46">
+                        Serviço de interesse
+                      </span>
+                      <select
+                        name="servico"
+                        defaultValue="Outsourcing de TI"
+                        className={formFieldClassName}
+                      >
+                        <option>Outsourcing de TI</option>
+                        <option>Telecomunicações</option>
+                        <option>4G Privado</option>
+                        <option>VSAT</option>
+                        <option>Cabeamento</option>
+                        <option>Projetos de Infraestrutura</option>
+                        <option>Outro</option>
+                      </select>
+                    </label>
+
+                    <label className="space-y-2">
+                      <span className="text-[0.72rem] uppercase tracking-[0.2em] text-white/46">
+                        Mensagem
+                      </span>
+                      <textarea
+                        name="mensagem"
+                        rows={5}
+                        placeholder="Conte um pouco sobre a necessidade da sua operação."
+                        className={cn(formFieldClassName, 'resize-none')}
+                      />
+                    </label>
+
+                    <Button type="submit" size="lg" className="justify-center sm:justify-start">
+                      Enviar mensagem
+                      <ArrowRight className="size-4" />
+                    </Button>
+                  </form>
                 </div>
               </div>
 
-              <div className="mt-10 flex flex-col gap-6 border-t border-white/10 pt-6 lg:flex-row lg:items-center lg:justify-between">
-                <div className="flex items-center gap-4">
-                  <img
-                    src="/logo_navbar.svg"
-                    alt="W13 Tecnologia"
-                    className="h-9 w-auto opacity-90"
-                  />
-                  <p className="text-sm text-white/48">
-                    Outsourcing, telecom e TI para operacoes que exigem resultado
-                    real.
-                  </p>
-                </div>
-
+              <div className="mt-8 flex flex-col gap-6 border-t border-white/10 pt-6 lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex flex-wrap gap-3 text-sm text-white/52">
                   {navItems.map((item) => (
                     <a
@@ -1117,6 +1176,10 @@ function App() {
                       {item.label}
                     </a>
                   ))}
+                </div>
+
+                <div className="text-sm text-white/46">
+                  © 2026 W13 Tecnologia. Todos os direitos reservados.
                 </div>
               </div>
             </SectionReveal>
