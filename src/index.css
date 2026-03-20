@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap');
 @import 'tailwindcss';
 
 @theme inline {
@@ -25,8 +25,8 @@
   --border: 219 19% 22%;
   --line: 215 19% 20%;
   --ivory: 34 32% 94%;
-  --font-display-family: 'Syne', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-body-family: 'DM Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-display-family: 'Sora', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color-scheme: dark;
 }
 
@@ -58,6 +58,7 @@
   h4,
   .font-display {
     font-family: var(--font-display-family);
+    font-weight: 700;
     letter-spacing: -0.04em;
   }
 
