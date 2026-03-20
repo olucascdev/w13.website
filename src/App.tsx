@@ -909,11 +909,11 @@ function App() {
                       <h3 className="text-lg font-medium text-white">Contato</h3>
                       <div className="space-y-4 text-sm leading-7 text-white/78">
                         <a
-                          href="tel:+5589999795973"
+                          href="tel:+5527998502376"
                           className="flex items-center gap-3 text-white transition-colors hover:text-accent"
                         >
                           <Phone className="size-4" />
-                          <span>(89) 99979-5973</span>
+                          <span>(27) 998502376</span>
                         </a>
                         <a
                           href="mailto:contato@w13.com.br"
@@ -968,7 +968,7 @@ function App() {
         </footer>
 
         <a
-          href="https://wa.me/5589999795973"
+          href="https://wa.me/5527998502376"
           target="_blank"
           rel="noreferrer"
           aria-label="Conversar no WhatsApp com a W13 Tecnologia"
