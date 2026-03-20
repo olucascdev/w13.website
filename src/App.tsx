@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LazyMotion, domAnimation, useReducedMotion } from 'framer-motion'
 
 import { SiteFooter } from '@/components/layout/site-footer'
@@ -14,6 +14,7 @@ import { sectionIds } from '@/data/site-content'
 import { useActiveSection } from '@/hooks/use-active-section'
 import { useBodyScrollLock } from '@/hooks/use-body-scroll-lock'
 import { useHeaderScrolled } from '@/hooks/use-header-scrolled'
+import { signalInitialAppReady } from '@/lib/initial-loader'
 
 function App() {
   const prefersReducedMotion = useReducedMotion() ?? false
@@ -21,6 +22,14 @@ function App() {
   const isHeaderScrolled = useHeaderScrolled()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   useBodyScrollLock(isMobileMenuOpen)
+
+  useEffect(() => {
+    const animationFrame = window.requestAnimationFrame(() => {
+      signalInitialAppReady()
+    })
+
+    return () => window.cancelAnimationFrame(animationFrame)
+  }, [])
 
   return (
     <LazyMotion features={domAnimation}>

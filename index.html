@@ -10,9 +10,182 @@
     />
     <meta name="theme-color" content="#060b16" />
     <title>W13 Tecnologia | Soluções integradas em tecnologia e telecomunicações</title>
+    <script>
+      (() => {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        const connection =
+          navigator.connection || navigator.mozConnection || navigator.webkitConnection
+
+        if (prefersReducedMotion || connection?.saveData) {
+          return
+        }
+
+        const preload = document.createElement('link')
+        preload.rel = 'preload'
+        preload.as = 'image'
+        preload.href = '/hero.gif'
+        document.head.appendChild(preload)
+      })()
+    </script>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background:
+          radial-gradient(circle at top, rgba(36, 84, 185, 0.24), transparent 36%),
+          linear-gradient(180deg, #08101d 0%, #060b16 100%);
+      }
+
+      #app-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background:
+          radial-gradient(circle at top, rgba(36, 84, 185, 0.34), transparent 40%),
+          linear-gradient(180deg, rgba(8, 12, 24, 0.98) 0%, rgba(6, 9, 19, 0.98) 100%);
+        transition:
+          opacity 0.45s ease,
+          visibility 0.45s ease;
+      }
+
+      #app-loader.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .app-loader__dots {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+      }
+
+      .app-loader__dot {
+        width: 0.9rem;
+        height: 0.9rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.12),
+          0 0 24px rgba(77, 124, 255, 0.35);
+        animation: app-loader-bounce 0.9s ease-in-out infinite;
+      }
+
+      .app-loader__dot:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+
+      .app-loader__dot:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+
+      @keyframes app-loader-bounce {
+        0%,
+        80%,
+        100% {
+          opacity: 0.32;
+          transform: scale(0.7);
+        }
+
+        40% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #app-loader,
+        .app-loader__dot {
+          transition-duration: 0.01ms;
+          animation-duration: 0.01ms;
+          animation-iteration-count: 1;
+        }
+      }
+    </style>
   </head>
   <body>
+    <noscript>
+      <style>
+        #app-loader {
+          display: none !important;
+        }
+      </style>
+    </noscript>
+    <div
+      id="app-loader"
+      role="status"
+      aria-live="polite"
+      aria-label="Carregando site da W13 Tecnologia"
+    >
+      <div class="app-loader__dots" aria-hidden="true">
+        <span class="app-loader__dot"></span>
+        <span class="app-loader__dot"></span>
+        <span class="app-loader__dot"></span>
+      </div>
+    </div>
     <div id="root"></div>
+    <script>
+      (() => {
+        const loader = document.getElementById('app-loader')
+
+        if (!loader) {
+          return
+        }
+
+        const state = {
+          appReady: false,
+          heroReady: false,
+          hidden: false,
+          hideTimer: 0,
+        }
+        const startedAt = performance.now()
+        const minVisibleMs = 650
+        const maxHeroWaitMs = 4200
+
+        const hideLoader = () => {
+          if (state.hidden) {
+            return
+          }
+
+          state.hidden = true
+          loader.classList.add('is-hidden')
+          window.setTimeout(() => loader.remove(), 500)
+        }
+
+        const queueHide = () => {
+          if (state.hidden || state.hideTimer || !state.appReady || !state.heroReady) {
+            return
+          }
+
+          const elapsed = performance.now() - startedAt
+          const remaining = Math.max(minVisibleMs - elapsed, 0)
+          state.hideTimer = window.setTimeout(hideLoader, remaining)
+        }
+
+        const markAppReady = () => {
+          state.appReady = true
+          queueHide()
+        }
+
+        const markHeroReady = () => {
+          state.heroReady = true
+          queueHide()
+        }
+
+        window.addEventListener('w13:app-ready', markAppReady)
+        window.addEventListener('w13:hero-ready', markHeroReady)
+        window.addEventListener('load', markAppReady, { once: true })
+        window.setTimeout(markHeroReady, maxHeroWaitMs)
+      })()
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

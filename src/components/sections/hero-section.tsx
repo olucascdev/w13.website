@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 
 import { SectionReveal } from '@/components/section-reveal'
 import { Button } from '@/components/ui/button'
 import { siteContainerClass } from '@/data/site-config'
 import { cn } from '@/lib/utils'
+import { signalInitialHeroReady } from '@/lib/initial-loader'
 
 type HeroSectionProps = {
   prefersReducedMotion: boolean
@@ -13,6 +14,22 @@ type HeroSectionProps = {
 export function HeroSection({ prefersReducedMotion }: HeroSectionProps) {
   const [isHeroLoaded, setIsHeroLoaded] = useState(false)
   const [isHeroAvailable, setIsHeroAvailable] = useState(true)
+  const hasSignaledHeroReady = useRef(false)
+
+  const markHeroReady = () => {
+    if (hasSignaledHeroReady.current) {
+      return
+    }
+
+    hasSignaledHeroReady.current = true
+    signalInitialHeroReady()
+  }
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      markHeroReady()
+    }
+  }, [prefersReducedMotion])
 
   return (
     <section id="home" className="relative flex min-h-screen flex-col overflow-hidden">
@@ -30,16 +47,23 @@ export function HeroSection({ prefersReducedMotion }: HeroSectionProps) {
           src="/hero.gif"
           alt=""
           aria-hidden="true"
+          width={854}
+          height={480}
           loading="eager"
           decoding="async"
+          fetchPriority="high"
           className={cn(
             'absolute inset-0 z-0 h-full w-full object-cover transition-opacity duration-700',
             isHeroLoaded ? 'opacity-60' : 'opacity-0',
           )}
-          onLoad={() => setIsHeroLoaded(true)}
+          onLoad={() => {
+            setIsHeroLoaded(true)
+            markHeroReady()
+          }}
           onError={() => {
             setIsHeroAvailable(false)
             setIsHeroLoaded(false)
+            markHeroReady()
           }}
         />
       ) : null}
