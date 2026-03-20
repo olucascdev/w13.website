@@ -1,4 +1,4 @@
-import { startTransition, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   AnimatePresence,
   LazyMotion,
@@ -33,7 +33,6 @@ type SectionId =
   | 'quem-somos'
   | 'servicos'
   | 'projetos'
-  | 'participacao'
   | 'clientes'
   | 'feedback'
   | 'contato'
@@ -65,20 +64,12 @@ type HighlightItem = {
   description: string
 }
 
-type ParticipationItem = {
-  id: 'estrategia' | 'implantacao' | 'sustentacao'
-  label: string
-  eyebrow: string
-  title: string
-  description: string
-  bullets: string[]
-}
-
 type MetricItem = {
   value: number
   suffix?: string
   label: string
-  description: string
+  icon: string
+  iconAlt: string
 }
 
 type FeedbackItem = {
@@ -99,7 +90,6 @@ const sectionIds: SectionId[] = [
   'quem-somos',
   'servicos',
   'projetos',
-  'participacao',
   'clientes',
   'feedback',
   'contato',
@@ -109,9 +99,7 @@ const navItems: { id: Exclude<SectionId, 'home'>; label: string }[] = [
   { id: 'quem-somos', label: 'Quem somos' },
   { id: 'servicos', label: 'Serviços' },
   { id: 'projetos', label: 'Projetos' },
-  { id: 'participacao', label: 'Participação' },
   { id: 'clientes', label: 'Clientes' },
-  { id: 'feedback', label: 'Feedback' },
   { id: 'contato', label: 'Contato' },
 ]
 
@@ -153,67 +141,27 @@ const highlights: HighlightItem[] = [
   },
 ]
 
-const participationItems: ParticipationItem[] = [
-  {
-    id: 'estrategia',
-    label: 'Estratégia',
-    eyebrow: 'Participação em projetos',
-    title: 'Entramos cedo para reduzir ruído, dependências e retrabalho.',
-    description:
-      'Antes da execução, organizamos escopo, prioridade, risco e ritmo de implantação para o projeto nascer orientado por viabilidade técnica e operacional.',
-    bullets: [
-      'Diagnóstico técnico e leitura de maturidade operacional.',
-      'Desenho de arquitetura, cronograma e marcos de entrega.',
-      'Mapeamento de dependências, janelas e criticidades do negócio.',
-    ],
-  },
-  {
-    id: 'implantacao',
-    label: 'Implantação',
-    eyebrow: 'Participação em projetos',
-    title: 'Executamos rollout, ativação e entrega com disciplina operacional.',
-    description:
-      'Coordenamos frentes técnicas, times de campo e validação para que a implantação aconteça com visibilidade, controle e documentação adequada.',
-    bullets: [
-      'Execução em campo, checklist técnico e aceite estruturado.',
-      'Acompanhamento de milestones, tratativa de bloqueios e comunicação clara.',
-      'Documentação do que foi entregue para facilitar sustentação e expansão.',
-    ],
-  },
-  {
-    id: 'sustentacao',
-    label: 'Sustentação',
-    eyebrow: 'Participação em projetos',
-    title: 'Seguimos no pós-go-live para estabilizar, atender e evoluir.',
-    description:
-      'A W13 permanece na camada operacional para manter SLA, absorver incidentes e transformar aprendizado em evolução contínua da operação.',
-    bullets: [
-      'Monitoramento, atendimento e gestão de incidentes com critério técnico.',
-      'Ajustes finos, manutenção preventiva e backlog evolutivo.',
-      'Visibilidade de performance para decisão rápida e continuidade operacional.',
-    ],
-  },
-]
-
 const projectMetrics: MetricItem[] = [
   {
     value: 261,
+    suffix: '+',
     label: 'Projetos concluídos',
-    description:
-      'Entregas fechadas com método, governança técnica e transição organizada.',
+    icon: '/metric-projects.png',
+    iconAlt: 'Ícone de troféu representando projetos concluídos',
   },
   {
     value: 259,
+    suffix: '+',
     label: 'Atendimentos executados',
-    description:
-      'Chamados, visitas técnicas e frentes operacionais conduzidas com previsibilidade.',
+    icon: '/metric-support.png',
+    iconAlt: 'Ícone de headset representando atendimentos executados',
   },
   {
     value: 2354,
     suffix: '+',
     label: 'Clientes atendidos',
-    description:
-      'Operações apoiadas em conectividade, sustentação, telecom e outsourcing.',
+    icon: '/metric-clients.png',
+    iconAlt: 'Ícone de grupo de pessoas representando clientes atendidos',
   },
 ]
 
@@ -373,12 +321,6 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isHeroLoaded, setIsHeroLoaded] = useState(false)
   const [isHeroAvailable, setIsHeroAvailable] = useState(true)
-  const [activeParticipation, setActiveParticipation] =
-    useState<ParticipationItem['id']>('estrategia')
-
-  const activeParticipationItem =
-    participationItems.find((item) => item.id === activeParticipation) ??
-    participationItems[0]
 
   useEffect(() => {
     const handleScroll = () => setIsHeaderScrolled(window.scrollY > 32)
@@ -632,22 +574,12 @@ function App() {
             />
 
             <div className={containerClass}>
-              <SectionReveal className="grid gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-end">
-                <div className="space-y-5">
-                  <span className="section-chip">Quem somos</span>
-                  <h2 className="section-title max-w-[12ch]">
-                    Soluções integradas para operações conectadas em todo o
-                    Brasil.
-                  </h2>
-                </div>
-                <p className="section-copy max-w-[40rem]">
-                  A W13 Tecnologia é uma empresa especializada em soluções
-                  integradas de comunicações, tecnologia e telecomunicações.
-                  Nossa atuação vai desde a implantação de redes e sistemas até
-                  a gestão completa de infraestrutura, sempre com foco em
-                  inovação, excelência e resultados concretos para nossos
-                  clientes.
-                </p>
+              <SectionReveal className="space-y-5 text-center">
+                <span className="section-chip">Quem somos</span>
+                <h2 className="section-title mx-auto max-w-[18ch]">
+                  Soluções integradas para operações conectadas em todo o
+                  Brasil.
+                </h2>
               </SectionReveal>
 
               <div className="mt-10 grid gap-4 lg:grid-cols-3">
@@ -660,7 +592,7 @@ function App() {
                     <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
                       {item.eyebrow}
                     </p>
-                    <h3 className="mt-5 text-[1.6rem] font-medium leading-tight text-[hsl(var(--ivory))]">
+                    <h3 className="card-title mt-5 text-[1.45rem] font-medium text-[hsl(var(--ivory))] sm:text-[1.55rem]">
                       {item.title}
                     </h3>
                     <p className="mt-5 text-sm leading-7 text-white/68 sm:text-base">
@@ -677,7 +609,7 @@ function App() {
                     delay={0.12 + index * 0.06}
                     className="stat-panel"
                   >
-                    <p className="text-[1.45rem] font-medium leading-tight text-[hsl(var(--ivory))]">
+                    <p className="card-title text-[1.3rem] font-medium text-[hsl(var(--ivory))] sm:text-[1.4rem]">
                       {item.title}
                     </p>
                     <p className="mt-4 text-sm leading-7 text-white/62">
@@ -691,19 +623,11 @@ function App() {
 
           <section id="servicos" className="py-24 sm:py-28">
             <div className={containerClass}>
-              <SectionReveal className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-                <div className="space-y-5">
-                  <span className="section-chip">O que fazemos</span>
-                  <h2 className="section-title max-w-[12ch]">
-                    Soluções completas em tecnologia e telecomunicações.
-                  </h2>
-                </div>
-                <p className="section-copy max-w-[40rem]">
-                  Com expertise técnica e atuação nacional, entregamos serviços
-                  end-to-end para empresas que precisam de infraestrutura
-                  confiável, conectividade de alto desempenho e suporte
-                  especializado.
-                </p>
+              <SectionReveal className="space-y-5 text-center">
+                <span className="section-chip">O que fazemos</span>
+                <h2 className="section-title mx-auto max-w-[18ch]">
+                  Soluções completas em tecnologia e telecomunicações.
+                </h2>
               </SectionReveal>
 
               <div className="mt-12 grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
@@ -761,7 +685,7 @@ function App() {
                             <p className="text-[0.7rem] uppercase tracking-[0.22em] text-white/44">
                               {service.eyebrow}
                             </p>
-                            <h3 className="text-[1.25rem] font-medium text-white">
+                            <h3 className="card-title text-[1.15rem] font-medium text-white sm:text-[1.2rem]">
                               {service.title}
                             </h3>
                             <p className="text-sm leading-7 text-white/64">
@@ -779,19 +703,11 @@ function App() {
 
           <section id="projetos" className="py-24 sm:py-28">
             <div className={containerClass}>
-              <SectionReveal className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-                <div className="space-y-5">
-                  <span className="section-chip">Casos de Sucesso</span>
-                  <h2 className="section-title max-w-[12ch]">
-                    Projetos que transformaram operações.
-                  </h2>
-                </div>
-                <p className="section-copy max-w-[42rem]">
-                  Da implantação à manutenção, entregamos projetos de alto
-                  impacto para empresas de diferentes setores em todo o Brasil.
-                  Cada projeto é uma prova do nosso compromisso com qualidade,
-                  prazo e resultado.
-                </p>
+              <SectionReveal className="space-y-5 text-center">
+                <span className="section-chip">Casos de Sucesso</span>
+                <h2 className="section-title mx-auto max-w-[16ch]">
+                  Projetos que transformaram operações.
+                </h2>
               </SectionReveal>
 
               <div className="mt-12 grid gap-4 md:grid-cols-2">
@@ -818,7 +734,7 @@ function App() {
                         <div className="project-card__meta">
                           <span>{project.category}</span>
                         </div>
-                        <h3 className="text-[1.75rem] font-medium leading-tight text-[hsl(var(--ivory))]">
+                        <h3 className="card-title text-[1.5rem] font-medium text-[hsl(var(--ivory))] sm:text-[1.65rem]">
                           {project.title}
                         </h3>
                         <p className="text-sm leading-7 text-white/72">
@@ -837,124 +753,28 @@ function App() {
                   </SectionReveal>
                 ))}
               </div>
-            </div>
-          </section>
-
-          <section id="participacao" className="py-24 sm:py-28">
-            <div className={containerClass}>
-              <SectionReveal className="space-y-5">
-                <span className="section-chip">Participação em projetos</span>
-                <h2 className="section-title max-w-[13ch]">
-                  Atuamos em pontos diferentes do projeto sem perder a mesma
-                  linha de raciocínio.
-                </h2>
-                <p className="section-copy max-w-[42rem]">
-                  A W13 pode entrar no desenho, acelerar a implantação ou
-                  assumir a sustentação. O valor está em manter critério,
-                  contexto e ritmo em cada etapa.
-                </p>
-              </SectionReveal>
-
-              <SectionReveal delay={0.08} className="mt-10 overflow-x-auto pb-2">
-                <div className="flex min-w-max gap-3">
-                  {participationItems.map((item) => {
-                    const isActive = item.id === activeParticipation
-
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        role="tab"
-                        aria-selected={isActive}
-                        aria-controls={`panel-${item.id}`}
-                        className={cn(
-                          'relative overflow-hidden rounded-full border px-5 py-3 text-sm transition-colors',
-                          isActive
-                            ? 'border-transparent text-[hsl(var(--ivory))]'
-                            : 'border-white/12 bg-white/[0.03] text-white/62 hover:text-white',
-                        )}
-                        onClick={() =>
-                          startTransition(() => setActiveParticipation(item.id))
-                        }
-                      >
-                        {isActive ? (
-                          <m.span
-                            layoutId="participation-pill"
-                            className="absolute inset-0 rounded-full bg-[hsl(var(--accent))]"
-                            transition={{
-                              type: 'spring',
-                              stiffness: 240,
-                              damping: 24,
-                            }}
-                          />
-                        ) : null}
-                        <span className="relative z-10">{item.label}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </SectionReveal>
-
-              <AnimatePresence mode="wait">
-                <m.div
-                  key={activeParticipationItem.id}
-                  id={`panel-${activeParticipationItem.id}`}
-                  role="tabpanel"
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
-                  animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-                  exit={prefersReducedMotion ? undefined : { opacity: 0, y: -14 }}
-                  transition={{ duration: 0.3 }}
-                  className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]"
-                >
-                  <div className="cut-panel p-6 sm:p-8">
-                    <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
-                      {activeParticipationItem.eyebrow}
-                    </p>
-                    <h3 className="mt-5 max-w-[16ch] text-[2rem] font-medium leading-tight text-white sm:text-[2.35rem]">
-                      {activeParticipationItem.title}
-                    </h3>
-                    <p className="mt-5 max-w-[34rem] text-sm leading-7 text-white/68 sm:text-base">
-                      {activeParticipationItem.description}
-                    </p>
-                  </div>
-
-                  <div className="cut-panel p-6 sm:p-8">
-                    <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
-                      Escopo de atuação
-                    </p>
-                    <div className="mt-6 space-y-4">
-                      {activeParticipationItem.bullets.map((bullet) => (
-                        <div
-                          key={bullet}
-                          className="flex items-start gap-4 rounded-[1.35rem] border border-white/8 bg-white/[0.03] p-5"
-                        >
-                          <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-[hsl(var(--accent))]" />
-                          <p className="text-sm leading-7 text-white/72">{bullet}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </m.div>
-              </AnimatePresence>
-
-              <div className="mt-10 grid gap-4 lg:grid-cols-3">
+              <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {projectMetrics.map((metric, index) => (
                   <SectionReveal
                     key={metric.label}
-                    delay={0.12 + index * 0.06}
-                    className="stat-panel"
+                    delay={0.1 + index * 0.06}
+                    className="stat-panel text-center"
                   >
-                    <CountUp
-                      value={metric.value}
-                      suffix={metric.suffix}
-                      className="stat-panel__value"
-                    />
-                    <h3 className="mt-5 text-xl font-medium text-white">
+                    <div className="flex items-center justify-center gap-4">
+                      <img
+                        src={metric.icon}
+                        alt={metric.iconAlt}
+                        className="h-14 w-14 rounded-2xl border border-white/10 bg-white/[0.04] p-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
+                      />
+                      <CountUp
+                        value={metric.value}
+                        suffix={metric.suffix}
+                        className="stat-panel__value"
+                      />
+                    </div>
+                    <h3 className="card-title mt-5 text-lg font-medium text-white sm:text-xl">
                       {metric.label}
                     </h3>
-                    <p className="mt-4 text-sm leading-7 text-white/62">
-                      {metric.description}
-                    </p>
                   </SectionReveal>
                 ))}
               </div>
@@ -963,28 +783,25 @@ function App() {
 
           <section id="clientes" className="py-24 sm:py-28">
             <div className={containerClass}>
-              <SectionReveal className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
-                <div className="space-y-5">
-                  <span className="section-chip">Clientes atendidos</span>
-                  <h2 className="section-title max-w-[11ch]">
-                    Empresas que confiaram projetos críticos à W13.
-                  </h2>
-                  <p className="section-copy max-w-[38rem]">
-                    Atuamos lado a lado com empresas de conectividade,
-                    telecomunicações, educação, energia e indústria, sustentando
-                    operações que exigem resposta técnica e execução confiável.
-                  </p>
-                </div>
+              <SectionReveal className="text-center">
+                <h2 className="section-title mx-auto max-w-[14ch]">
+                  Clientes atendidos
+                </h2>
+              </SectionReveal>
 
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                  {clients.map((client, index) => (
-                    <SectionReveal
-                      key={client}
-                      delay={index * 0.04}
-                      className="profile-panel flex min-h-[124px] items-center justify-center text-center"
+              <SectionReveal delay={0.08} className="marquee-mask mt-12 overflow-hidden">
+                <div
+                  className="flex w-max gap-4 animate-marquee pr-4"
+                  style={{ animationDuration: '24s' }}
+                >
+                  {[...clients, ...clients].map((client, index) => (
+                    <div
+                      key={`${client}-${index}`}
+                      aria-hidden={index >= clients.length}
+                      className="profile-panel flex min-h-[124px] min-w-[190px] items-center justify-center px-6 text-center sm:min-w-[220px]"
                     >
                       <p className="text-base font-medium text-white">{client}</p>
-                    </SectionReveal>
+                    </div>
                   ))}
                 </div>
               </SectionReveal>
@@ -993,27 +810,26 @@ function App() {
 
           <section id="feedback" className="py-24 sm:py-28">
             <div className={containerClass}>
-              <SectionReveal className="space-y-5">
-                <span className="section-chip">Feedback</span>
-                <h2 className="section-title max-w-[12ch]">
-                  Percepções de quem precisou organizar a operação e seguir
-                  escalando.
+              <SectionReveal className="text-center">
+                <h2 className="section-title mx-auto max-w-[12ch]">
+                  Feedback
                 </h2>
               </SectionReveal>
 
-              <div className="mt-12 grid gap-4 xl:grid-cols-3">
-                {feedbackItems.map((item, index) => (
-                  <SectionReveal
-                    key={item.author + item.role}
-                    delay={index * 0.05}
-                    className="feedback-panel"
-                  >
+              <SectionReveal delay={0.08} className="marquee-mask mt-12 overflow-hidden">
+                <div
+                  className="flex w-max gap-4 animate-marquee pr-4"
+                  style={{ animationDuration: '30s' }}
+                >
+                  {[...feedbackItems, ...feedbackItems].map((item, index) => (
                     <m.article
+                      key={`${item.author}-${index}`}
                       whileHover={
                         prefersReducedMotion ? undefined : { y: -6, scale: 1.01 }
                       }
                       transition={{ duration: 0.22 }}
-                      className="flex h-full flex-col justify-between gap-10"
+                      aria-hidden={index >= feedbackItems.length}
+                      className="feedback-panel flex min-h-[260px] w-[18rem] min-w-[18rem] flex-col justify-between gap-8 sm:w-[21rem] sm:min-w-[21rem]"
                     >
                       <p className="text-[1.15rem] leading-8 text-[hsl(var(--ivory))]">
                         "{item.quote}"
@@ -1023,9 +839,9 @@ function App() {
                         <p className="text-sm text-white/56">{item.role}</p>
                       </div>
                     </m.article>
-                  </SectionReveal>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </SectionReveal>
             </div>
           </section>
         </main>
@@ -1053,7 +869,7 @@ function App() {
 
                   <div className="space-y-5">
                     <span className="section-chip">Entre em contato</span>
-                    <h2 className="section-title max-w-[10ch]">
+                    <h2 className="section-title max-w-[14ch]">
                       Vamos conversar sobre o seu projeto.
                     </h2>
                     <p className="section-copy max-w-[36rem]">
