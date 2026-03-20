@@ -10,9 +10,7 @@ import {
   ArrowRight,
   BarChart3,
   Cloud,
-  Globe,
   Headset,
-  Instagram,
   Mail,
   Menu,
   Phone,
@@ -51,6 +49,7 @@ type ProjectItem = {
   tags: string[]
   image: string
   alt: string
+  imageClassName?: string
 }
 
 type PrincipleItem = {
@@ -76,13 +75,6 @@ type FeedbackItem = {
   quote: string
   author: string
   role: string
-}
-
-type ContactItem = {
-  label: string
-  value: string
-  href: string
-  icon: LucideIcon
 }
 
 const sectionIds: SectionId[] = [
@@ -217,8 +209,9 @@ const projects: ProjectItem[] = [
     description:
       'Implantação de sistema de internet via satélite para operação em região de difícil acesso, garantindo conectividade estável e contínua para equipes de campo com zero downtime operacional.',
     tags: ['VSAT', 'Satélite', 'Conectividade', 'Infraestrutura'],
-    image: '/project-vsat.svg',
-    alt: 'Ilustração de rede VSAT com antena satelital e conectividade remota.',
+    image: '/media/projects/project-vsat.jpg',
+    alt: 'Foto de operação remota com infraestrutura de conectividade via satélite.',
+    imageClassName: 'object-center object-[50%_65%]',
   },
   {
     category: '4G Privado',
@@ -226,8 +219,9 @@ const projects: ProjectItem[] = [
     description:
       'Implementação de rede 4G privada, baseada em LTE, em ambiente industrial, com cobertura dedicada, baixa latência e segurança de dados para operações críticas e contínuas.',
     tags: ['LTE', '4G Privado', 'Redes Corporativas'],
-    image: '/project-lte.svg',
-    alt: 'Ilustração de torre LTE privada em ambiente industrial.',
+    image: '/media/projects/project-lte.jpeg',
+    alt: 'Foto de infraestrutura de telecomunicações para rede LTE privada.',
+    imageClassName: 'object-center object-[50%_8%]',
   },
   {
     category: 'Infraestrutura',
@@ -235,8 +229,9 @@ const projects: ProjectItem[] = [
     description:
       'Planejamento, execução e certificação de infraestrutura de cabeamento estruturado para empresa com múltiplas unidades, integrando todas as sedes em uma única rede corporativa de alto desempenho.',
     tags: ['Cabeamento', 'Site Survey', 'Rack', 'Certificação'],
-    image: '/project-cabling.svg',
-    alt: 'Ilustração de racks, cabos e infraestrutura de rede multisede.',
+    image: '/media/projects/project-cabling.png',
+    alt: 'Foto de instalação de cabeamento estruturado e infraestrutura de rede.',
+    imageClassName: 'object-center object-[50%_8%]',
   },
   {
     category: 'Outsourcing',
@@ -244,8 +239,9 @@ const projects: ProjectItem[] = [
     description:
       'Outsourcing completo da infraestrutura de TI com suporte técnico dedicado, gerenciamento de roteadores, implantação de sistemas e treinamento das equipes internas.',
     tags: ['Outsourcing', 'Suporte TI', 'Gestão de Infraestrutura'],
-    image: '/project-outsourcing.svg',
-    alt: 'Ilustração de operação de TI terceirizada com painéis e monitoramento.',
+    image: '/media/projects/project-outsourcing.jpg',
+    alt: 'Foto de ambiente corporativo representando gestão terceirizada de TI.',
+    imageClassName: 'object-center object-[50%_8%]',
   },
 ]
 
@@ -283,36 +279,7 @@ const feedbackItems: FeedbackItem[] = [
   },
 ]
 
-const contactItems: ContactItem[] = [
-  {
-    label: 'Telefone e WhatsApp',
-    value: '(89) 99979-5973',
-    href: 'https://wa.me/5589999795973',
-    icon: Phone,
-  },
-  {
-    label: 'E-mail',
-    value: 'contato@w13.com.br',
-    href: 'mailto:contato@w13.com.br',
-    icon: Mail,
-  },
-  {
-    label: 'Instagram',
-    value: '@w13tecnologia',
-    href: 'https://www.instagram.com/w13tecnologia',
-    icon: Instagram,
-  },
-  {
-    label: 'Site',
-    value: 'www.w13.com.br',
-    href: 'https://www.w13.com.br',
-    icon: Globe,
-  },
-]
-
 const containerClass = 'mx-auto w-[min(1200px,calc(100%-2rem))]'
-const formFieldClassName =
-  'w-full rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-white/38 focus:border-white/20 focus:bg-white/[0.06]'
 
 function App() {
   const prefersReducedMotion = useReducedMotion()
@@ -518,6 +485,14 @@ function App() {
             ) : null}
 
             <div className="hero-grid absolute inset-0 z-0" aria-hidden="true" />
+            <div
+              className="absolute bottom-0 right-0 z-0 h-28 w-36 bg-[radial-gradient(circle_at_bottom_right,rgba(6,9,19,0.98)_0%,rgba(6,9,19,0.9)_34%,rgba(6,9,19,0.55)_58%,rgba(6,9,19,0)_82%)] blur-xl sm:h-36 sm:w-48 lg:h-44 lg:w-64"
+              aria-hidden="true"
+            />
+            <div
+              className="absolute inset-x-0 bottom-0 z-0 h-24 bg-[linear-gradient(180deg,rgba(6,9,19,0)_0%,rgba(6,9,19,0.18)_26%,rgba(6,9,19,0.68)_78%,rgba(6,9,19,0.92)_100%)]"
+              aria-hidden="true"
+            />
 
             <div
               className={cn(
@@ -576,9 +551,13 @@ function App() {
             <div className={containerClass}>
               <SectionReveal className="space-y-5 text-center">
                 <span className="section-chip">Quem somos</span>
-                <h2 className="section-title mx-auto max-w-[18ch]">
-                  Soluções integradas para operações conectadas em todo o
-                  Brasil.
+                <h2 className="section-title mx-auto max-w-[24ch] text-[clamp(1.9rem,5vw,4.2rem)]">
+                  <span className="block sm:whitespace-nowrap">
+                    Soluções integradas para operações
+                  </span>
+                  <span className="block sm:whitespace-nowrap">
+                    conectadas em todo o Brasil.
+                  </span>
                 </h2>
               </SectionReveal>
 
@@ -625,8 +604,13 @@ function App() {
             <div className={containerClass}>
               <SectionReveal className="space-y-5 text-center">
                 <span className="section-chip">O que fazemos</span>
-                <h2 className="section-title mx-auto max-w-[18ch]">
-                  Soluções completas em tecnologia e telecomunicações.
+                <h2 className="section-title mx-auto max-w-[24ch] text-[clamp(1.9rem,5vw,4.2rem)]">
+                  <span className="block sm:whitespace-nowrap">
+                    Soluções completas em
+                  </span>
+                  <span className="block sm:whitespace-nowrap">
+                    tecnologia e telecomunicações.
+                  </span>
                 </h2>
               </SectionReveal>
 
@@ -634,9 +618,9 @@ function App() {
                 <SectionReveal className="cut-panel overflow-hidden p-4 sm:p-5">
                   <div className="space-y-5">
                     <img
-                      src="/services-showcase.svg"
-                      alt="Ilustração de operação integrada com racks, painéis e conectividade de telecomunicações"
-                      className="w-full rounded-[1.55rem] border border-white/10 bg-white/[0.03]"
+                      src="/media/services/service-industrial.png"
+                      alt="Foto aérea de operação industrial com infraestrutura de tecnologia e telecomunicações"
+                      className="h-[280px] w-full rounded-[1.55rem] border border-white/10 object-cover bg-white/[0.03] sm:h-[320px]"
                     />
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div className="rounded-[1.35rem] border border-white/8 bg-white/[0.04] p-5">
@@ -657,6 +641,13 @@ function App() {
                           mesma linha técnica e governança de processos.
                         </p>
                       </div>
+                    </div>
+                    <div className="rounded-[1.55rem] border border-white/10 bg-white/[0.03] p-3 sm:p-4">
+                      <img
+                        src="/media/services/service-satellite.png"
+                        alt="Foto de antena satelital usada em soluções de conectividade remota"
+                        className="h-[360px] w-full rounded-[1.2rem] object-cover sm:h-[460px]"
+                      />
                     </div>
                   </div>
                 </SectionReveal>
@@ -705,8 +696,11 @@ function App() {
             <div className={containerClass}>
               <SectionReveal className="space-y-5 text-center">
                 <span className="section-chip">Casos de Sucesso</span>
-                <h2 className="section-title mx-auto max-w-[16ch]">
-                  Projetos que transformaram operações.
+                <h2 className="section-title mx-auto max-w-[20ch] text-[clamp(1.9rem,5vw,4.2rem)]">
+                  <span className="block sm:whitespace-nowrap">
+                    Projetos que transformaram
+                  </span>
+                  <span className="block sm:whitespace-nowrap">operações.</span>
                 </h2>
               </SectionReveal>
 
@@ -727,7 +721,10 @@ function App() {
                       <img
                         src={project.image}
                         alt={project.alt}
-                        className="h-56 w-full rounded-[1.55rem] border border-white/10 object-cover"
+                        className={cn(
+                          'h-56 w-full rounded-[1.55rem] border border-white/10 object-cover',
+                          project.imageClassName,
+                        )}
                       />
 
                       <div className="space-y-4">
@@ -849,149 +846,117 @@ function App() {
         <footer id="contato" className="pb-10 pt-8 sm:pb-12">
           <div className={containerClass}>
             <SectionReveal className="cut-panel overflow-hidden p-6 sm:p-8 lg:p-10">
-              <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
-                <div className="space-y-6">
-                  <div className="flex items-center gap-4">
-                    <img
-                      src="/logo_navbar.svg"
-                      alt="W13 Tecnologia"
-                      className="h-9 w-auto opacity-90"
-                    />
-                    <div className="space-y-1">
-                      <p className="font-display text-xl text-[hsl(var(--ivory))]">
-                        Soluções em Tecnologia
-                      </p>
-                      <p className="text-sm text-white/46">
-                        Abra as portas para a tecnologia.
+              <div className="space-y-8">
+                <div className="space-y-4 text-center">
+                  <h2 className="mx-auto font-display text-[clamp(2rem,7vw,4.1rem)] leading-[1.02] text-[hsl(var(--ivory))]">
+                    Vamos conversar
+                    <br />
+                    <span className="whitespace-nowrap">sobre o seu projeto.</span>
+                  </h2>
+                </div>
+
+                <div className="grid gap-8 lg:grid-cols-2">
+                  <div className="mx-auto w-full max-w-[320px] space-y-8 text-left">
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-medium text-white">
+                        Horário de funcionamento
+                      </h3>
+                      <div className="space-y-4 text-sm leading-7 text-white/78">
+                        <p>
+                          Segunda a sexta
+                          <br />
+                          9:00 às 18:00
+                        </p>
+                        <p>
+                          Sábados
+                          <br />
+                          09:00 às 13:00
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-medium text-white">
+                        Atendimento suporte
+                      </h3>
+                      <p className="text-sm leading-7 text-white/78">
+                        08:00 às 22:00
+                        <br />
+                        Pelo telefone suporte
                       </p>
                     </div>
                   </div>
 
-                  <div className="space-y-5">
-                    <span className="section-chip">Entre em contato</span>
-                    <h2 className="section-title max-w-[14ch]">
-                      Vamos conversar sobre o seu projeto.
-                    </h2>
-                    <p className="section-copy max-w-[36rem]">
-                      Nossa equipe está pronta para entender as necessidades da
-                      sua empresa e apresentar a solução mais adequada.
-                      Respondemos em até 24 horas úteis.
-                    </p>
-                  </div>
+                  <div className="mx-auto w-full max-w-[320px] space-y-8 text-left">
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-medium text-white">
+                        Endereço sede
+                      </h3>
+                      <p className="text-sm leading-7 text-white/78">
+                        Avenida Jerônimo Monteiro, 1000
+                        <br />
+                        18º Andar - 18º Andar
+                        <br />
+                        Edifício Trade Center
+                        <br />
+                        Centro, Vitória - ES
+                        <br />
+                        CEP 29010-935
+                      </p>
+                    </div>
 
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {contactItems.map((item) => {
-                      const Icon = item.icon
-
-                      return (
-                        <a key={item.label} href={item.href} target="_blank" rel="noreferrer">
-                          <div className="contact-panel h-full">
-                            <div className="service-icon">
-                              <Icon className="size-5" />
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-[0.7rem] uppercase tracking-[0.24em] text-white/46">
-                                {item.label}
-                              </p>
-                              <p className="text-sm text-white/84">{item.value}</p>
-                            </div>
-                          </div>
+                    <div className="space-y-4 text-left">
+                      <h3 className="text-lg font-medium text-white">Contato</h3>
+                      <div className="space-y-4 text-sm leading-7 text-white/78">
+                        <a
+                          href="tel:+5589999795973"
+                          className="flex items-center gap-3 text-white transition-colors hover:text-accent"
+                        >
+                          <Phone className="size-4" />
+                          <span>(89) 99979-5973</span>
                         </a>
-                      )
-                    })}
+                        <a
+                          href="mailto:contato@w13.com.br"
+                          className="flex items-center gap-3 text-white transition-colors hover:text-accent"
+                        >
+                          <Mail className="size-4" />
+                          <span>contato@w13.com.br</span>
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div className="cut-panel p-6 sm:p-8">
-                  <form action="#" method="POST" className="grid gap-4">
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <label className="space-y-2">
-                        <span className="text-[0.72rem] uppercase tracking-[0.2em] text-white/46">
-                          Nome completo
-                        </span>
-                        <input
-                          type="text"
-                          name="nome"
-                          placeholder="Seu nome"
-                          className={formFieldClassName}
-                        />
-                      </label>
-
-                      <label className="space-y-2">
-                        <span className="text-[0.72rem] uppercase tracking-[0.2em] text-white/46">
-                          E-mail corporativo
-                        </span>
-                        <input
-                          type="email"
-                          name="email"
-                          placeholder="seu.nome@empresa.com.br"
-                          className={formFieldClassName}
-                        />
-                      </label>
-                    </div>
-
-                    <label className="space-y-2">
-                      <span className="text-[0.72rem] uppercase tracking-[0.2em] text-white/46">
-                        Empresa
-                      </span>
-                      <input
-                        type="text"
-                        name="empresa"
-                        placeholder="Nome da empresa"
-                        className={formFieldClassName}
-                      />
-                    </label>
-
-                    <label className="space-y-2">
-                      <span className="text-[0.72rem] uppercase tracking-[0.2em] text-white/46">
-                        Serviço de interesse
-                      </span>
-                      <select
-                        name="servico"
-                        defaultValue="Outsourcing de TI"
-                        className={formFieldClassName}
-                      >
-                        <option>Outsourcing de TI</option>
-                        <option>Telecomunicações</option>
-                        <option>4G Privado</option>
-                        <option>VSAT</option>
-                        <option>Cabeamento</option>
-                        <option>Projetos de Infraestrutura</option>
-                        <option>Outro</option>
-                      </select>
-                    </label>
-
-                    <label className="space-y-2">
-                      <span className="text-[0.72rem] uppercase tracking-[0.2em] text-white/46">
-                        Mensagem
-                      </span>
-                      <textarea
-                        name="mensagem"
-                        rows={5}
-                        placeholder="Conte um pouco sobre a necessidade da sua operação."
-                        className={cn(formFieldClassName, 'resize-none')}
-                      />
-                    </label>
-
-                    <Button type="submit" size="lg" className="justify-center sm:justify-start">
-                      Enviar mensagem
-                      <ArrowRight className="size-4" />
-                    </Button>
-                  </form>
+                <div className="cut-panel overflow-hidden p-3 sm:p-4">
+                  <iframe
+                    title="Mapa da sede da W13 Tecnologia"
+                    src="https://www.google.com/maps?q=Avenida%20Jer%C3%B4nimo%20Monteiro%2C%201000%2C%20Vit%C3%B3ria%20ES&z=16&output=embed"
+                    className="h-[360px] w-full rounded-[1.4rem] border-0 sm:h-[420px]"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </div>
+
               </div>
 
               <div className="mt-8 flex flex-col gap-6 border-t border-white/10 pt-6 lg:flex-row lg:items-center lg:justify-between">
-                <div className="flex flex-wrap gap-3 text-sm text-white/52">
-                  {navItems.map((item) => (
-                    <a
-                      key={item.id}
-                      href={`#${item.id}`}
-                      className="transition-colors hover:text-white"
-                    >
-                      {item.label}
-                    </a>
-                  ))}
+                <div className="flex flex-col items-center gap-4 lg:flex-row lg:items-center">
+                  <img
+                    src="/logo_navbar.svg"
+                    alt="W13 Tecnologia"
+                    className="h-7 w-auto opacity-80 sm:h-8"
+                  />
+                  <div className="flex flex-wrap justify-center gap-3 text-sm text-white/52 lg:justify-start">
+                    {navItems.map((item) => (
+                      <a
+                        key={item.id}
+                        href={`#${item.id}`}
+                        className="transition-colors hover:text-white"
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="text-sm text-white/46">
