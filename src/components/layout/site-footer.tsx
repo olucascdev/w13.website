@@ -116,6 +116,14 @@ export function SiteFooter() {
                     {item.label}
                   </a>
                 ))}
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSdQXERb1vW2LP9wCNRzrL4-8tPYzfaM2Ib3PjvSjKEEI_9RIQ/viewform"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-white"
+                >
+                  Trabalhe conosco
+                </a>
               </div>
             </div>
 

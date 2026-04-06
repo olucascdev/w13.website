@@ -67,6 +67,14 @@ export function SiteHeader({
 
         <div className="hidden items-center gap-3 lg:flex">
           <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdQXERb1vW2LP9wCNRzrL4-8tPYzfaM2Ib3PjvSjKEEI_9RIQ/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[0.66rem] uppercase tracking-[0.2em] text-white/64 transition-colors hover:text-white"
+          >
+            Trabalhe conosco
+          </a>
+          <a
             href={`mailto:${contactInfo.email}`}
             className="text-[0.66rem] uppercase tracking-[0.2em] text-white/64 transition-colors hover:text-white"
           >
@@ -113,6 +121,15 @@ export function SiteHeader({
                   {item.label}
                 </a>
               ))}
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSdQXERb1vW2LP9wCNRzrL4-8tPYzfaM2Ib3PjvSjKEEI_9RIQ/viewform"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block rounded-[1.1rem] px-4 py-3 text-sm text-white/84 transition-colors hover:bg-white/[0.08]"
+                onClick={onCloseMobileMenu}
+              >
+                Trabalhe conosco
+              </a>
               <Button
                 asChild
                 variant="glass"
