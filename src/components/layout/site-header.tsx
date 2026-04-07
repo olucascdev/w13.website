@@ -67,7 +67,7 @@ export function SiteHeader({
 
         <div className="hidden items-center gap-3 lg:flex">
           <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSdQXERb1vW2LP9wCNRzrL4-8tPYzfaM2Ib3PjvSjKEEI_9RIQ/viewform"
+            href="https://recruiter.w13.com.br/cadastro-tecnico"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[0.66rem] uppercase tracking-[0.2em] text-white/64 transition-colors hover:text-white"
@@ -122,7 +122,7 @@ export function SiteHeader({
                 </a>
               ))}
               <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSdQXERb1vW2LP9wCNRzrL4-8tPYzfaM2Ib3PjvSjKEEI_9RIQ/viewform"
+                href="https://recruiter.w13.com.br/cadastro-tecnico"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block rounded-[1.1rem] px-4 py-3 text-sm text-white/84 transition-colors hover:bg-white/[0.08]"
